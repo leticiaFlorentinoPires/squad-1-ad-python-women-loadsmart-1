@@ -1,0 +1,23 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.pyc
+.vscode/
+
+# testing
+db.sqlite3
+
+# testing
+.pytest_cache/
+
+# misc
+.env
+venv/
+
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+._*
+.Trashes
+ehthumbs.db
+Thumbs.db

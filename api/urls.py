@@ -9,4 +9,4 @@ router.register(r'logs', views.AgentAPIViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
-]
+    ]

@@ -5,10 +5,10 @@ from .models import Event, Agent
 class AgentModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Agent
-        fields = ['id', 'descricao', 'level', 'detalhes', 'origem', 'date', 'user', 'event']
+        fields = ['name', 'status', 'env', 'version', 'address']
 
 class EventModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
-        fields = ['id', 'codigo', 'descricao', 'env', 'arquivado', 'date']
+        fields = ['title', 'level', 'data', 'archived', 'date']
 

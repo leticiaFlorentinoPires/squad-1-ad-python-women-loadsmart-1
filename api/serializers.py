@@ -1,19 +1,14 @@
 from rest_framework import serializers
-from .models import User, Event, Log
+from .models import Event, Agent
 
 
-class UserModelSerializer(serializers.ModelSerializer):
+class AgentModelSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
-        fields = ['id', 'name', 'last_login', 'email', 'password']
-
+        model = Agent
+        fields = ['id', 'descricao', 'level', 'detalhes', 'origem', 'date', 'user', 'event']
 
 class EventModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
         fields = ['id', 'codigo', 'descricao', 'env', 'arquivado', 'date']
 
-class LogModelSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Log
-        fields = ['id', 'descricao', 'level', 'detalhes', 'origem', 'date', 'user', 'event']

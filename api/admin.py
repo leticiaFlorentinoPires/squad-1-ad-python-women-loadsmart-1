@@ -1,6 +1,5 @@
 from django.contrib import admin
-from .models import User, Event, Log
+from .models import Event, Agent
 
-admin.site.register(User)
 admin.site.register(Event)
-admin.site.register(Log)
+admin.site.register(Agent)

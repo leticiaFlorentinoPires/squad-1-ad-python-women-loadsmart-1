@@ -6,21 +6,17 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import User, Event, Log
+from api.models import Event, Agent
 from .serializers import (
-    UserModelSerializer,
     EventModelSerializer,
-    LogModelSerializer
+    AgentModelSerializer
 )
 
-class UserAPIViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = UserModelSerializer
+class AgentAPIViewSet(viewsets.ModelViewSet):
+    queryset = Agent.objects.all()
+    serializer_class = AgentModelSerializer
 
 class EventAPIViewSet(viewsets.ModelViewSet):
     queryset = Event.objects.all()
     serializer_class = EventModelSerializer
 
-class LogAPIViewSet(viewsets.ModelViewSet):
-    queryset = Log.objects.all()
-    serializer_class = LogModelSerializer

@@ -8,3 +8,5 @@ pytest==3.6.2
 six==1.11.0
 Django==2.2.4
 djangorestframework==3.10.2
+pytz==2019.3
+sqlparse==0.3.0

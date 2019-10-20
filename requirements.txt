@@ -10,3 +10,5 @@ Django==2.2.4
 djangorestframework==3.10.2
 pytz==2019.3
 sqlparse==0.3.0
+pytest-django==3.6.0
+pytest-cov==2.8.1

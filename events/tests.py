@@ -1,20 +1,19 @@
 import os
 import django
-from django.test import TestCase
+import pytest
 from django.contrib.auth.models import User, Group
+
+from events.models import Event, Agent
+from events.views import list_events
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "central_erros.settings")
 django.setup()
 
-from events.models import Event, Agent
-
-from events.views import (
-    list_events
-)
+pytestmark = pytest.mark.django_db
 
 
 # Create your tests here.
-class TestViews(TestCase):
+class TestViews():
     def setUp(self) -> None:
         admin = Group.objects.create(name="admin")
 
@@ -61,7 +60,7 @@ class TestViews(TestCase):
             agent=agent_mac,
         )
 
-    def list_all_errors(self):
+    def test_list_all_errors(self):
         events = list_events()
         assert isinstance(users[0], Event)
         self.assertEqual(admins.count(), 2)

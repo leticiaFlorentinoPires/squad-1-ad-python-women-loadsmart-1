@@ -6,12 +6,24 @@ Em projetos modernos é cada vez mais comum o uso de arquiteturas baseadas em se
 
 ## Instruções de instalação:
 
-1. Install the project requirements:
+1. Instalar requirements do projeto:
 
     ```bash
     python3.6 -m venv venv
     source venv/bin/activate
     pip install -r requirements.txt
+    ```
+
+2. Migrar banco de dados
+
+    <!-- python3 manage.py makemigrations api -->
+    ```bash
     python3 manage.py migrate
     ```
-<!-- python3 manage.py makemigrations api -->
+
+2. Subir servidor
+
+    ```bash
+    python3 manage.py runserver
+    ```
+

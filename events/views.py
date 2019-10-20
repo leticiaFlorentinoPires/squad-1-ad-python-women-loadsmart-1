@@ -6,11 +6,22 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from api.models import Event, Agent
+from events.models import Event, Agent
 from .serializers import (
     EventModelSerializer,
     AgentModelSerializer
 )
+
+def list_events(request):
+    """Return all events."""
+    events = Event.objects.all()
+
+    context = {
+        'events': events,
+        'events_empty': []
+    }
+
+    return render(request, 'events/list.html', context=context)
 
 class AgentAPIViewSet(viewsets.ModelViewSet):
     queryset = Agent.objects.all()

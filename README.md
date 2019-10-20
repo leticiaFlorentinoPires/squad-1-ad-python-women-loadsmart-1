@@ -6,7 +6,7 @@ Em projetos modernos é cada vez mais comum o uso de arquiteturas baseadas em se
 
 ## Instruções de instalação:
 
-1. Install the project requirements:
+1. Instalar requirements do projeto:
 
     ```bash
     python3.6 -m venv venv
@@ -14,5 +14,23 @@ Em projetos modernos é cada vez mais comum o uso de arquiteturas baseadas em se
     pip install -r requirements.txt
     ```
 
-<!-- python3 manage.py makemigrations api -->
-python3 manage.py migrate
+2. Migrar banco de dados
+
+    <!-- python3 manage.py makemigrations api -->
+    ```bash
+    python3 manage.py migrate
+    python3 manage.py migrate events
+    ```
+
+2. Subir servidor
+
+    ```bash
+    python3 manage.py runserver
+    ```
+
+2. Acessar aplicação:
+
+    ```bash
+    http://127.0.0.1:8000/events/
+    ```
+

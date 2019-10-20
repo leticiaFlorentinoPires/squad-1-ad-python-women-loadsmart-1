@@ -8,6 +8,8 @@ db.sqlite3
 
 # testing
 .pytest_cache/
+.coverage
+htmlcov
 
 # misc
 .env

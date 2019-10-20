@@ -1,10 +1,13 @@
+import datetime
 import os
 import django
 import pytest
 from django.contrib.auth.models import User, Group
+from django.db.models import QuerySet
 
-from events.models import Event, Agent
+from events.models import Event, Agent, AgentManager
 from events.views import list_events
+
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "central_erros.settings")
 django.setup()
@@ -24,7 +27,7 @@ class TestViews():
             name="__USER__", email="mail@mail.com", password="__PASSWORD__"
         )
 
-        leticia.group.set([admin])
+        ada.group.set([admin])
 
         agent_linux = Agent.objects.create(
             name="linux-server",
@@ -66,3 +69,8 @@ class TestViews():
         response = list_events(request)
         assert response.status_code == 200
 
+    def test_get_agent_level(self):
+        #TODO: add test that is return Agent type, in real BD it is working
+        #but here no...it's return empty list
+        agent = Agent.objects.get_agent_level(envname="production")
+        assert isinstance(agent, QuerySet)

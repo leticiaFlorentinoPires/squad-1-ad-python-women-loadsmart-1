@@ -60,8 +60,9 @@ class TestViews():
             agent=agent_mac,
         )
 
-    def test_list_all_errors(self):
-        events = list_events()
-        assert isinstance(users[0], Event)
-        self.assertEqual(admins.count(), 2)
+    def test_view_list_events(self):
+        request = None
+
+        response = list_events(request)
+        assert response.status_code == 200
 

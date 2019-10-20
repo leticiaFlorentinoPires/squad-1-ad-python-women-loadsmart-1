@@ -12,7 +12,6 @@ Em projetos modernos é cada vez mais comum o uso de arquiteturas baseadas em se
     python3.6 -m venv venv
     source venv/bin/activate
     pip install -r requirements.txt
+    python3 manage.py migrate
     ```
-
 <!-- python3 manage.py makemigrations api -->
-python3 manage.py migrate

@@ -1,0 +1,10 @@
+<h1>Lista de erros</h1>
+
+{% for event in events %}
+    <p> 
+        {{ event.archived }} - 
+        {{ event.level }} - 
+        {{ event.title }} - 
+        {{ event.data }}
+    </p>
+{% endfor %}

@@ -16,6 +16,8 @@ class Agent(models.Model):
         User, on_delete=models.PROTECT, null=True, related_name="user"
     )
 
+    def __str__(self):
+        return f'{self.name} {self.env}'
 
 class Event(models.Model):
 
@@ -35,3 +37,6 @@ class Event(models.Model):
     agent = models.ForeignKey(
         Agent, on_delete=models.PROTECT, null=True, related_name="agent"
     )
+
+    def __str__(self):
+        return f'{self.title} {self.level}'

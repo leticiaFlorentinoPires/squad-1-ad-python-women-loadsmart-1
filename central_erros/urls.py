@@ -16,7 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+from central_erros.views import list_errors
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include(('api.urls', 'api'), namespace='api'))
+    path('api/', include(('api.urls', 'api'), namespace='api')),
+    path('', list_errors),
 ]

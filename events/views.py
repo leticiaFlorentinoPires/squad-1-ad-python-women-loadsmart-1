@@ -12,6 +12,16 @@ from .serializers import (
     AgentModelSerializer
 )
 
+def list_errors(request):
+    events = Event.objects.all()
+
+    context = {
+        'events': events,
+        'events_empty': []
+    }
+
+    return render(request, 'events/list.html', context=context)
+
 class AgentAPIViewSet(viewsets.ModelViewSet):
     queryset = Agent.objects.all()
     serializer_class = AgentModelSerializer

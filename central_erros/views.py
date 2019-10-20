@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-from api.models import Event
+from events.models import Event
 
 
 def list_errors(request):

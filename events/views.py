@@ -6,7 +6,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from api.models import Event, Agent
+from events.models import Event, Agent
 from .serializers import (
     EventModelSerializer,
     AgentModelSerializer

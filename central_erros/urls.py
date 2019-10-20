@@ -20,6 +20,6 @@ from central_erros.views import list_errors
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include(('api.urls', 'api'), namespace='api')),
+    path('events/', include(('events.urls', 'events'), namespace='events')),
     path('', list_errors),
 ]

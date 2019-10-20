@@ -19,6 +19,7 @@ Em projetos modernos é cada vez mais comum o uso de arquiteturas baseadas em se
     <!-- python3 manage.py makemigrations api -->
     ```bash
     python3 manage.py migrate
+    python3 manage.py migrate events
     ```
 
 2. Subir servidor

@@ -28,3 +28,9 @@ Em projetos modernos é cada vez mais comum o uso de arquiteturas baseadas em se
     python3 manage.py runserver
     ```
 
+2. Acessar aplicação:
+
+    ```bash
+    http://127.0.0.1:8000/events/
+    ```
+

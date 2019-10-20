@@ -13,6 +13,7 @@ from .serializers import (
 )
 
 def list_events(request):
+    """Return all events."""
     events = Event.objects.all()
 
     context = {

@@ -12,7 +12,7 @@ from .serializers import (
     AgentModelSerializer
 )
 
-def list_errors(request):
+def list_events(request):
     events = Event.objects.all()
 
     context = {

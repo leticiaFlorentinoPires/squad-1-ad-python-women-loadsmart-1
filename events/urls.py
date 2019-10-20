@@ -8,5 +8,5 @@ router.register(r'events', views.EventAPIViewSet)
 router.register(r'logs', views.AgentAPIViewSet)
 
 urlpatterns = [
-    path('', views.list_errors),
+    path('', views.list_events),
 ]

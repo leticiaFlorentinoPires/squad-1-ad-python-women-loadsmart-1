@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <a href="{% url 'events:list' %}" class="btn btn-outline-primary">
+        <i class="fas fa-arrow-left"></i>
+    </a>
+
+    <h2> {{ event.level|capfirst }} no {{ event.agent.address }} em {{ event.date }}</h2>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm">
+                <h2>Título</h2>
+                <p>{{ event.title }}</p>
+                <h2>Descrição</h2>
+                <p>{{ event.data }}</p>
+            </div>
+            <div class="col-sm">
+                {{ event.level }} 
+                <h3>Eventos</h3>
+                <p>?</p>
+                <h3>Coletado por</h3>
+                {{ event.agent.user }} 
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -4,7 +4,14 @@ from django.contrib.auth.models import User
 from django.core.validators import validate_ipv4_address
 
 
+class AgentManager(models.Manager):
+    def get_agent_level(self, envname):
+        queryset = self.get_queryset().filter(env=envname)
+        return queryset
+
+
 class Agent(models.Model):
+    objects = AgentManager()
     name = models.CharField("name", max_length=50)
     status = models.BooleanField(default=False)
     env = models.CharField("env", max_length=20)
@@ -19,8 +26,8 @@ class Agent(models.Model):
     def __str__(self):
         return f'{self.name} {self.env}'
 
-class Event(models.Model):
 
+class Event(models.Model):
     LEVEL_CHOICES = [
         ("critical", "critical"),
         ("debug", "debug"),
@@ -40,3 +47,4 @@ class Event(models.Model):
 
     def __str__(self):
         return f'{self.title} {self.level}'
+

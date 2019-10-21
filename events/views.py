@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponseNotFound, HttpResponseBadRequest
+from rest_framework import viewsets
 
 from events.models import Event, Agent
 from .serializers import (

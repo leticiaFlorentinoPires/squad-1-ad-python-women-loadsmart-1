@@ -10,6 +10,6 @@ router.register(r'agents', views.AgentAPIViewSet)
 urlpatterns = [
     path('api/', include(router.urls)),
     path('', views.list_events, name='list_events'),
-    path('<str:envName>/', views.post_detail, name='post_detail')
+    path('<str:envName>/', views.post_detail, name='post_detail'),
     path('<int:event_id>', views.get_event, name='detail')
 ]

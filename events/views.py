@@ -15,13 +15,29 @@ from .serializers import (
 def list_events(request):
     """Return all events."""
     events = Event.objects.all()
+    enviroments = Agent.objects.values('env').distinct()
+    envReturn = list()
+    for env in enviroments:
+        envReturn.append(env['env'])
 
     context = {
         'events': events,
+        'env': envReturn,
         'events_empty': []
     }
 
     return render(request, 'events/list.html', context=context)
+
+def post_detail(request, envName):
+    query = Event.objects.get_queryset().filter(agent__env=envName)
+    context = {
+        'events': query
+    }
+
+    return render(request, 'events/list.html', context=context)
+
+
+
 
 class AgentAPIViewSet(viewsets.ModelViewSet):
     queryset = Agent.objects.all()

@@ -3,8 +3,19 @@
 {% block content %}
     <div class="row">
         <div class="col-md-9">
-            <h2>Filtro aqui</h2>
-        </div>      
+            <div class="dropdown">
+              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Enviroments
+              </button>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  {% for e in env %}
+                      <a class="dropdown-item">{{ e }}</a>
+                  {% endfor %}
+              </div>
+            </div>
+{#            <h2>Filtro aqui</h2>#}
+        </div>
+    </div>
 
         <table class="table table-striped table-bordered">
             <thead>
@@ -23,8 +34,9 @@
                             <p class="text-lowercase">{{ event.level }}</p>
                         </td>
                         <td>
-                            <p class="text-center font-weight-bold">{{ event.title }}</p> 
-                             <p class="text-center">{{ event.data }}</p>
+                             <p class="text-center font-weight-bold"> Título:{{ event.title }}</p>
+                             <p class="text-center">data: {{ event.data }}</p>
+                            <p class="text-center"> endereço de origem: {{ event.agent.address }}</p>
                         </td>
                             
                             

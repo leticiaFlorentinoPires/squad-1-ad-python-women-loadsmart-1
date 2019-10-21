@@ -24,7 +24,7 @@ class Agent(models.Model):
     )
 
     def __str__(self):
-        return f'{self.name} {self.env}'
+        return f'{self.name}, {self.status}, {self.env},{self.version}, {self.address}'
 
 
 class Event(models.Model):
@@ -46,5 +46,5 @@ class Event(models.Model):
     )
 
     def __str__(self):
-        return f'{self.title} {self.level}'
+        return f'{self.title}, {self.level}, {self.data}, {self.archived}, {self.agent}'
 

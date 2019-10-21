@@ -11,4 +11,4 @@ class AgentModelSerializer(serializers.ModelSerializer):
 class EventModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
-        fields = ["title", "level", "data", "archived", "date"]
+        fields = ["title", "level", "data", "archived", "date", "agent"]

@@ -1,10 +1,5 @@
 from django.shortcuts import render
-from rest_framework import viewsets
-from rest_framework import mixins
-from rest_framework import generics
-from rest_framework import status
-from rest_framework.response import Response
-from rest_framework.views import APIView
+from django.http import HttpResponseNotFound, HttpResponseBadRequest
 
 from events.models import Event, Agent
 from .serializers import (
@@ -27,6 +22,19 @@ def list_events(request):
     }
 
     return render(request, 'events/list.html', context=context)
+
+def get_event(request, event_id):
+    """Return event by a given id."""
+    if request.method == 'GET':
+        try:
+            event = Event.objects.get(pk=event_id)
+            context = {
+                'event': event,
+            }
+            return render(request, 'events/detail.html', context=context)
+        except Event.DoesNotExist:
+            return HttpResponseNotFound("event not found")
+    return HttpResponseBadRequest("invalid action")
 
 def post_detail(request, envName):
     query = Event.objects.get_queryset().filter(agent__env=envName)

@@ -41,6 +41,13 @@
                             
                             
                         <td> ? </td>
+                        <td>
+                            <div class="btn-group" role="group" aria-label="Basic example">
+                                <a href="{% url 'events:detail' event.pk %}" class="btn btn-primary">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                            </div>
+                        </td>
                     </tr>
                 {% empty %}
                     <tr>

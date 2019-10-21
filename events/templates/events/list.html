@@ -9,7 +9,7 @@
               </button>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                   {% for e in env %}
-                      <a class="dropdown-item">{{ e }}</a>
+                      <a href="{% url 'events:post_detail' e %}" class="dropdown-item">{{ e }}</a>
                   {% endfor %}
               </div>
             </div>

@@ -2,7 +2,8 @@
 
 {% block content %}
     <div class="row">
-        <div class="col-md-9">
+{#    selecao dos ambientes "env"#}
+        <div class="col-md-1">
             <div class="dropdown">
               <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Enviroments
@@ -15,6 +16,20 @@
             </div>
 {#            <h2>Filtro aqui</h2>#}
         </div>
+{#    buscar por #}
+     <div class="col-md-1">
+            <div class="dropdown">
+              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Ordenar por
+              </button>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  {% for e in env %}
+                      <a href="{% url 'events:post_detail' e %}" class="dropdown-item">{{ e }}</a>
+                  {% endfor %}
+              </div>
+            </div>
+{#            <h2>Filtro aqui</h2>#}
+     </div>
     </div>
 
         <table class="table table-striped table-bordered">
@@ -24,26 +39,27 @@
                     <th>Level</th>
                     <th>Log</th>
                     <th>Eventos</th>
+                    <th>Detalhes</th>
                 </tr>
             </thead>
             <tbody>
                 {% for event in events %}
                     <tr>
-                        <td>{{ event.archived }}</td>
+                        <td>{{ event.event.archived }}</td>
                         <td>
-                            <p class="text-lowercase">{{ event.level }}</p>
+                            <p class="text-lowercase">{{ event.event.level }}</p>
                         </td>
                         <td>
-                             <p class="text-center font-weight-bold"> Título:{{ event.title }}</p>
-                             <p class="text-center">data: {{ event.data }}</p>
-                            <p class="text-center"> endereço de origem: {{ event.agent.address }}</p>
+                             <p class="text-center font-weight-bold"> Título:{{ event.event.title }}</p>
+                             <p class="text-center">data: {{ event.event.data }}</p>
+                            <p class="text-center"> endereço de origem: {{ event.event.agent.address }}</p>
                         </td>
                             
                             
-                        <td> ? </td>
+                        <td> {{ event.count }} </td>
                         <td>
                             <div class="btn-group" role="group" aria-label="Basic example">
-                                <a href="{% url 'events:detail' event.pk %}" class="btn btn-primary">
+                                <a href="{% url 'events:detail' event.event.pk %}" class="btn btn-primary">
                                     <i class="fas fa-eye"></i>
                                 </a>
                             </div>

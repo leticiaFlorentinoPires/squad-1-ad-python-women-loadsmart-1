@@ -1,3 +1,4 @@
+from django.db.models import QuerySet, Count
 from django.shortcuts import render
 from django.http import HttpResponseNotFound, HttpResponseBadRequest
 from rest_framework import viewsets
@@ -10,14 +11,46 @@ from .serializers import (
 
 def list_events(request):
     """Return all events."""
+    #gerar frequencia
     events = Event.objects.all()
+
+    result_group_by = list(Event.objects.values('agent_id','level').annotate(acount=Count('agent_id')))
+
+    print("resultado do group by \n")
+    # print(result_group_by)
+
+    event_count = list()
+    lista_qualquer = list()
+    dicionario =dict()
+    # result_group_by = list(result_group_by.values('agent_id','acount'))
+    # print(result_group_by)
+    for group in result_group_by:
+        # print(group)
+        for event in events:
+            # print(dados)
+            if group['agent_id'] == event.agent.id:
+                # print("id_evento" + " " + "event.title"+ " " + "event.level"+ "  " + "group['agent_id']" + " " + "group['acount']")
+                # print(str(event.id)+" "+str(event.title)+" "+ str(event.level)+"  "+str(group['agent_id'])+" "+str(group['acount']))
+                if dicionario.get('agentId') is None:
+                    dicionario['event'] = event
+                    dicionario['agentId'] = group['agent_id']
+                    dicionario['count'] = group['acount']
+                else:
+                    pass
+                event_count.append({'event': event,
+                                    'agentId': group['agent_id'],
+                                    'count': group['acount'] })
+
+    print(dicionario)
+
+    # para passar para o "dropdown" de enviroments
     enviroments = Agent.objects.values('env').distinct()
     envReturn = list()
     for env in enviroments:
         envReturn.append(env['env'])
-
+    # print(event_count)
     context = {
-        'events': events,
+        'events': event_count,
         'env': envReturn,
         'events_empty': []
     }

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Event, Agent
+from events.models import Event, Agent
 
 
 class AgentModelSerializer(serializers.ModelSerializer):
@@ -11,4 +11,4 @@ class AgentModelSerializer(serializers.ModelSerializer):
 class EventModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
-        fields = ["title", "level", "data", "archived", "date"]
+        fields = ["title", "level", "data", "archived", "date", "agent"]

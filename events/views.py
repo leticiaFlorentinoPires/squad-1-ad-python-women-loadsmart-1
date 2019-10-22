@@ -20,28 +20,16 @@ def list_events(request):
     # print(result_group_by)
 
     event_count = list()
-    lista_qualquer = list()
-    dicionario =dict()
-    # result_group_by = list(result_group_by.values('agent_id','acount'))
     # print(result_group_by)
     for group in result_group_by:
         # print(group)
         for event in events:
             # print(dados)
-            if group['agent_id'] == event.agent.id:
-                # print("id_evento" + " " + "event.title"+ " " + "event.level"+ "  " + "group['agent_id']" + " " + "group['acount']")
-                # print(str(event.id)+" "+str(event.title)+" "+ str(event.level)+"  "+str(group['agent_id'])+" "+str(group['acount']))
-                if dicionario.get('agentId') is None:
-                    dicionario['event'] = event
-                    dicionario['agentId'] = group['agent_id']
-                    dicionario['count'] = group['acount']
-                else:
-                    pass
+            if group['agent_id'] == event.agent.id and group['level']==event.level:
                 event_count.append({'event': event,
                                     'agentId': group['agent_id'],
                                     'count': group['acount'] })
 
-    print(dicionario)
 
     # para passar para o "dropdown" de enviroments
     enviroments = Agent.objects.values('env').distinct()

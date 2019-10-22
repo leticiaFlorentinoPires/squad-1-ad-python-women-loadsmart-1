@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Event, Agent
+from events.models import Event, Agent
 
 
 class AgentModelSerializer(serializers.ModelSerializer):

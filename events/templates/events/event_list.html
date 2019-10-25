@@ -8,8 +8,9 @@
                 Enviroments
               </button>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  {% for e in object_list %}
-                    <a href="{% url 'events:filter_events' e.agent.env %}" class="dropdown-item">{{ e.agent.env }}</a>
+                  {% for e in dropdown_list %}
+{#                      <a class="dropdown-item">{{ e.agent__env }}</a>#}
+                    <a href="{% url 'events:filter_events' e.agent__env %}" class="dropdown-item">{{ e.agent__env }}</a>
                   {% endfor %}
               </div>
             </div>

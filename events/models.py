@@ -5,8 +5,8 @@ from django.core.validators import validate_ipv4_address
 
 
 class AgentManager(models.Manager):
-    def get_agent_level(self, envname):
-        queryset = self.get_queryset().filter(env=envname)
+    def get_agent_level(self, envName):
+        queryset = self.get_queryset().filter(env=envName)
         return queryset
 
 

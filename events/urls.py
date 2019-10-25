@@ -9,7 +9,7 @@ router.register(r'agents', views.AgentAPIViewSet)
 
 urlpatterns = [
     path('api/', include(router.urls)),
-    path('', EventsListView.as_view(), name='events-list'),
-    path('<str:envName>/', EventFilter.as_view(), name='filter_events'),
+    path('', EventFilter.as_view(), name='events-list'),
+    path('<str:envName>', EventFilter.as_view(), name='filter_events'),
     path('<int:event_id>', EventDetail.as_view(), name='detail')
 ]

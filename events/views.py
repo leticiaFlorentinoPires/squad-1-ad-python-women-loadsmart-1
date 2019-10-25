@@ -37,12 +37,16 @@ class EventFilter(ListView):
 
     def get(self, request, *args, **kwargs):
         # print(Event.objects.values('agent__env').distinct())
-        filtro_env= kwargs['envName']
-        query_filtrada = Event.objects.filter(agent__env=filtro_env)
-        context = {
-            'object_list': query_filtrada
-        }
-        print(filtro_env)
+
+        if (kwargs.get('envName')):
+            filtro_env= kwargs['envName']
+            query_filtrada = Event.objects.filter(agent__env=filtro_env)
+            context = {
+                'object_list': query_filtrada
+            }
+            print(filtro_env)
+        else:
+            return super().get(self, request, *args, **kwargs)
         return render(request, 'events/event_list.html', context=context)
         # return super(EventFilter, self).get(request, *args, **kwargs)
 

@@ -2,19 +2,25 @@
 
 {% block content %}
     <div class="row">
-        <div class="col-md-9">
-            <div class="dropdown">
-              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Enviroments
-              </button>
-              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  {% for e in dropdown_list %}
-{#                      <a class="dropdown-item">{{ e.agent__env }}</a>#}
-                    <a href="{% url 'events:filter_events' e.agent__env %}" class="dropdown-item">{{ e.agent__env }}</a>
-                  {% endfor %}
-              </div>
-            </div>
-        </div>
+            <form method="get" action="{% url 'events:events-list' %}">
+        <select name="envName">
+            {% for e in dropdown_list %}
+                <option   value={{ e }}>{{e}}</option>
+            {% endfor %}
+        </select>
+        <select name="orderBy">
+                 <option   value=frequencia>frequencia</option>
+                <option   value=level>level</option>
+
+        </select>
+        <select name="buscarPor">
+                <option   value=level>level</option>
+                <option   value=descricao>descricao</option>
+                <option   value=origem>origem</option>
+        </select>
+
+                <input type="submit" name="submit" value="search"/>
+            </form>
     </div>
 
         <table class="table table-striped table-bordered">

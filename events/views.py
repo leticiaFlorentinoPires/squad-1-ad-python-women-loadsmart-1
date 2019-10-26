@@ -25,17 +25,18 @@ class EventFilter(ListView):
 
 
     def get_context_data(self, *, object_list=None, **kwargs):
-        print("oioioioi")
         context = super(EventFilter, self).get_context_data(**kwargs)
         teste= Event.objects.values('agent__env').distinct()
-        # lista_env=list()
-        # for env in teste:
-        #     lista_env.append(env['agent__env'])
-        context['dropdown_list'] =  teste
+        context['dropdown_list'] = ["dev","production","homologacao"]
         print(Event.objects.values('agent__env').distinct())
         return context
 
     def get(self, request, *args, **kwargs):
+        if request.method == "GET":
+            print("estou no get")
+            print(request.GET.get('envName'))
+            print(request.GET.get('orderBy'))
+            # print(request.GET.get())
         # print(Event.objects.values('agent__env').distinct())
         return super(EventFilter, self).get(request, *args, **kwargs)
 

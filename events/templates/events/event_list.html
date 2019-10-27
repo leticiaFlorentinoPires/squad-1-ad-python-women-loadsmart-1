@@ -4,21 +4,25 @@
     <div class="row">
             <form method="get" action="{% url 'events:events-list' %}">
         <select name="envName">
+         <option   value="env">Enviroment</option>
             {% for e in dropdown_list %}
                 <option   value={{ e }}>{{e}}</option>
             {% endfor %}
         </select>
         <select name="orderBy">
+            <option   value="ordenacao">Order by</option>
                  <option   value=frequencia>frequencia</option>
                 <option   value=level>level</option>
 
         </select>
         <select name="buscarPor">
+            <option   value="buscaCampo">Search for</option>
                 <option   value=level>level</option>
                 <option   value=descricao>descricao</option>
                 <option   value=origem>origem</option>
         </select>
 
+        <input type="text" name="pesquisaText" onfocus=this.value='' value="Type here"/>
                 <input type="submit" name="submit" value="search"/>
             </form>
     </div>
@@ -44,7 +48,7 @@
                              <p class="text-center">data: {{ event.data }}</p>
                             <p class="text-center"> endereço de origem: {{ event.agent.address }}</p>
                         </td>
-                        <td> ? </td>
+                        <td> {{ event.frequencia }} </td>
                         <td>
                             <div class="btn-group" role="group" aria-label="Basic example">
                                 <a href="{% url 'events:detail' event.pk %}" class="btn btn-primary">

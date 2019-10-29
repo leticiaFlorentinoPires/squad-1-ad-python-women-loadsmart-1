@@ -1,0 +1,594 @@
+swagger: '2.0'
+info:
+  description: >-
+    This is a sample server Central of Error server.  You can find out more
+    about     Swagger at [http://swagger.io](http://swagger.io) or on
+    [irc.freenode.net, #swagger](http://swagger.io/irc/).      For this sample,
+    you can use the api key `special-key` to test the authorization     filters.
+  version: 1.0.0
+  title: Swagger Central of Error
+  termsOfService: 'http://swagger.io/terms/'
+  contact:
+    email: apiteam@swagger.io
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+host: centralerror.swagger.io
+basePath: /v2
+tags:
+  - name: auth
+    description: token auth
+    externalDocs:
+      description: foind out more
+      url: http//swagger.io
+  - name: agents
+    description: Everything about Agents
+    externalDocs:
+      description: Find out more
+      url: 'http://swagger.io'
+  - name: groups
+    description: Access to groups
+    externalDocs:
+      description: Find out more about groups
+      url: 'http://swagger.io'
+  - name: users
+    description: Operations about user
+    externalDocs:
+      description: Find out more about our users
+      url: 'http://swagger.io'
+schemes:
+  - https
+  - http
+paths:
+  /auth/token:
+    post:
+      tags:
+        - auth
+      summary: List all tokens
+      description: This list all tokens
+      produces:
+        - application/xml
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: Created user object
+          required: true
+          schema:
+            $ref: '#/definitions/Auth'
+      responses:
+        '401':
+          description: Access token is missing or invalid
+        default:
+          description: successful operation
+      security:
+        - token: []
+  /agents:
+    post:
+      tags:
+        - agents
+      summary: Add a new agent to central
+      description: ''
+      operationId: addAgent
+      consumes:
+        - application/json
+        - application/xml
+      produces:
+        - application/xml
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: Agent object that needs to be added to the system
+          required: true
+          schema:
+            $ref: '#/definitions/Agent'
+      responses:
+        '401':
+          description: Access token is missing or invalid
+        '405':
+          description: Invalid input
+      security:
+        - token: []
+  '/agents/{id}':
+    get:
+      tags:
+        - agents
+      summary: Find agent by ID
+      description: Returns a single agent
+      operationId: getAgentById
+      produces:
+        - application/xml
+        - application/json
+      parameters:
+        - name: id
+          type: integer
+          in: path
+          description: Id values that need to be considered for filter
+          required: true
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Agent'
+        '400':
+          description: Invalid ID supplied
+        '401':
+          description: Access token is missing or invalid
+        '404':
+          description: Agent not found
+      security:
+        - token: []
+    delete:
+      tags:
+        - agents
+      summary: Deletes an agent
+      description: Used to delete an agent
+      operationId: deleteAgent
+      produces:
+        - application/xml
+        - application/json
+      parameters:
+        - name: api_key
+          in: header
+          required: false
+          type: string
+        - name: id
+          in: path
+          description: Agent id to delete
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '400':
+          description: Invalid ID supplied
+        '401':
+          description: Access token is missing or invalid
+        '404':
+          description: Agent not found
+      security:
+        - token: []
+    put:
+      tags:
+        - agents
+      summary: Update an existing agent
+      description: ''
+      operationId: updateAgent
+      consumes:
+        - application/json
+        - application/xml
+      produces:
+        - application/xml
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          description: Agent object that needs to be added to the store
+          required: true
+          type: integer
+      responses:
+        '400':
+          description: Invalid ID supplied
+        '401':
+          description: Access token is missing or invalid
+        '404':
+          description: Pet not found
+        '405':
+          description: Validation exception
+      security:
+        - token: []
+  '/agents/{id}/events':
+    get:
+      tags:
+        - agents
+      summary: Finds events made by agent
+      description: 'returns all events made by '
+      operationId: findAgentByStatus
+      produces:
+        - application/xml
+        - application/json
+      parameters:
+        - name: id
+          type: integer
+          in: path
+          description: Status values that need to be considered for filter
+          required: true
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: Invalid status value
+        '401':
+          description: Access token is missing or invalid
+      security:
+        - token: []
+  '/agents/{id}/events/{id}':
+    get:
+      tags:
+        - agents
+      summary: Finds event id made by agent id
+      description: returns event made by agent
+      operationId: findEventById
+      produces:
+        - application/xml
+        - application/json
+      parameters:
+        - name: id
+          type: integer
+          in: path
+          description: Id values that need to be considered for filter
+          required: true
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: Invalid status value
+        '401':
+          description: Access token is missing or invalid
+      security:
+        - token: []
+  /users:
+    post:
+      tags:
+        - users
+      summary: List all users
+      description: This can only be done by the logged in user.
+      produces:
+        - application/xml
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: Created user object
+          required: true
+          schema:
+            $ref: '#/definitions/User'
+      responses:
+        '401':
+          description: Access token is missing or invalid
+        default:
+          description: successful operation
+      security:
+        - token: []
+  '/users/{id}':
+    get:
+      tags:
+        - users
+      summary: Get user by userid
+      description: ''
+      operationId: getUserById
+      produces:
+        - application/xml
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: 'The id that needs to be fetched. Use user1 for testing. '
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/User'
+        '400':
+          description: Invalid username supplied
+        '401':
+          description: Access token is missing or invalid
+        '404':
+          description: User not found
+      security:
+        - token: []
+    put:
+      tags:
+        - users
+      summary: Updated user
+      description: This can only be done by the logged in user.
+      operationId: updateUser
+      produces:
+        - application/xml
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: name that need to be updated
+          required: true
+          type: integer
+        - in: body
+          name: body
+          description: Updated user object
+          required: true
+          schema:
+            $ref: '#/definitions/User'
+      responses:
+        '400':
+          description: Invalid user supplied
+        '401':
+          description: Access token is missing or invalid
+        '404':
+          description: User not found
+      security:
+        - token: []
+    delete:
+      tags:
+        - users
+      summary: Delete user
+      description: This can only be done by the logged in user.
+      operationId: deleteUser
+      produces:
+        - application/xml
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: The name that needs to be deleted
+          required: true
+          type: integer
+      responses:
+        '400':
+          description: Invalid username supplied
+        '401':
+          description: Access token is missing or invalid
+        '404':
+          description: User not found
+      security:
+        - token: []
+  /groups:
+    post:
+      tags:
+        - groups
+      summary: List all groups
+      description: This list all groups
+      produces:
+        - application/xml
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: Created user object
+          required: true
+          schema:
+            $ref: '#/definitions/Group'
+      responses:
+        '401':
+          description: Access token is missing or invalid
+        default:
+          description: successful operation
+      security:
+        - token: []
+  '/groups/{id}':
+    get:
+      tags:
+        - groups
+      summary: Get user by userid
+      description: ''
+      operationId: getGroupById
+      produces:
+        - application/xml
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: 'The id that needs to be fetched. Use user1 for testing. '
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/User'
+        '400':
+          description: Invalid username supplied
+        '401':
+          description: Access token is missing or invalid
+        '404':
+          description: User not found
+      security:
+        - token: []
+    put:
+      tags:
+        - groups
+      summary: Updated user
+      description: This can only be done by the logged in user.
+      operationId: updateGroup
+      produces:
+        - application/xml
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: name that need to be updated
+          required: true
+          type: integer
+        - in: body
+          name: body
+          description: Updated user object
+          required: true
+          schema:
+            $ref: '#/definitions/User'
+      responses:
+        '400':
+          description: Invalid user supplied
+        '401':
+          description: Access token is missing or invalid
+        '404':
+          description: User not found
+      security:
+        - token: []
+    delete:
+      tags:
+        - groups
+      summary: Delete user
+      description: This can only be done by the logged in user.
+      operationId: deleteGroup
+      produces:
+        - application/xml
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: The name that needs to be deleted
+          required: true
+          type: integer
+      responses:
+        '400':
+          description: Invalid username supplied
+        '401':
+          description: Access token is missing or invalid
+        '404':
+          description: User not found
+      security:
+        - token: []
+securityDefinitions:
+  token:
+    type: apiKey
+    name: Token
+    in: header
+  api_key:
+    type: apiKey
+    name: api_key
+    in: header
+definitions:
+  Auth:
+    type: object
+    discriminator: token
+  Event:
+    type: object
+    required:
+      - agentId
+      - id
+      - level
+      - date
+      - shelve
+    properties:
+      id:
+        type: integer
+        format: int64
+        description: user id
+      agentId:
+        type: integer
+        format: int64
+        description: agent associeted
+      level:
+        type: string
+        example: warning
+        description: level of event
+      date:
+        type: string
+        format: date-time
+        description: date of event
+      shelve:
+        type: boolean
+        example: true
+        description: Event Status
+      payload:
+        type: string
+        example: date came from computer 1
+        description: payload of event
+    xml:
+      name: Event
+  UserGroup:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+        description: user group id
+      userId:
+        type: integer
+        description: user id associeted with
+      groupId:
+        type: integer
+        description: group id associeted with
+    xml:
+      name: UserGroup
+  User:
+    type: object
+    required:
+      - name
+      - password
+      - id
+    properties:
+      id:
+        type: integer
+        format: int64
+        description: user id
+        example: 1
+      name:
+        type: string
+        description: user name
+        example: Joao
+      email:
+        type: string
+        example: joao@gmail.com
+      password:
+        type: string
+        example: '123456'
+      last_login:
+        type: string
+        format: date-time
+        example: 11/04/1992
+    xml:
+      name: User
+  Group:
+    type: object
+    required:
+      - id
+      - name
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+        example: internship
+  Agent:
+    type: object
+    required:
+      - name
+      - status
+      - enviroment
+      - version
+      - adress
+      - user_id
+    properties:
+      id:
+        type: integer
+        format: int64
+        description: agent id
+      status:
+        type: boolean
+        example: true
+        description: status of agent
+      enviroment:
+        type: string
+        example: production
+        description: enviroment where the event happened
+      version:
+        type: string
+        example: 1.1.1
+        description: version of agent machine
+      adress:
+        type: string
+        example: 127.0.0.1
+        description: ip adress
+      userId:
+        type: integer
+        description: user associeted with this agent
+        $ref: '#/definitions/User'
+    xml:
+      name: Agent
+  ApiResponse:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      type:
+        type: string
+      message:
+        type: string
+externalDocs:
+  description: Find out more about Swagger
+  url: 'http://swagger.io'
+

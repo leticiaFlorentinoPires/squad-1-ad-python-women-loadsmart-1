@@ -22,7 +22,7 @@
                 <option   value=origem>origem</option>
         </select>
 
-        <input type="text" name="pesquisaText" onfocus=this.value='' value="Type here"/>
+        <input type="text" name="pesquisaText" onfocus=this.value='' placeholder="Type here"/>
                 <input type="submit" name="submit" value="search"/>
             </form>
     </div>
@@ -41,12 +41,12 @@
                     <tr>
                         <td>{{ event.archived }}</td>
                         <td>
-                            <p class="text-lowercase">{{ event.level }}</p>
+                            <p class="text-lowercase">{{ event.get_level_display }}</p>
                         </td>
                         <td>
-                             <p class="text-center font-weight-bold"> Título:{{ event.title }}</p>
-                             <p class="text-center">data: {{ event.data }}</p>
-                            <p class="text-center"> endereço de origem: {{ event.agent.address }}</p>
+                             <p class="text-center font-weight-bold"> Título: {{ event.title }}</p>
+                             <p class="text-center">Descrição: {{ event.data }}</p>
+                            <p class="text-center"> Endereço de origem: {{ event.agent.address }}</p>
                         </td>
                         <td> {{ event.frequencia }} </td>
                         <td>

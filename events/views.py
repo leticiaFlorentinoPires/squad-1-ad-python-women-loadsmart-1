@@ -52,13 +52,13 @@ class EventFilter(ListView):
         if self.search_for is not None and self.search_for!="buscaCampo":
             if self.pesquisa_text is not None and not self.pesquisa_text == "":
                 if self.search_for == "level":
-                    self.retorno_query = self.retorno_query.filter(level=self.pesquisa_text)
+                    self.retorno_query = self.retorno_query.filter(level__icontains=self.pesquisa_text)
                 elif self.search_for == "descricao":
-                    self.retorno_query = self.retorno_query.filter(data=self.pesquisa_text)
+                    self.retorno_query = self.retorno_query.filter(data__icontains=self.pesquisa_text)
                 elif self.search_for == "origem":
                     print("origem")
                     print(self.pesquisa_text)
-                    self.retorno_query = self.retorno_query.filter(agent__address=self.pesquisa_text)
+                    self.retorno_query = self.retorno_query.filter(agent__address__icontains=self.pesquisa_text)
 
         if self.orderBy is not None and self.orderBy!="ordenacao":
             if self.orderBy == "level":

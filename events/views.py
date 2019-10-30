@@ -3,8 +3,11 @@ from django.shortcuts import render
 from django.views.generic.list import ListView, MultipleObjectMixin
 from django.views.generic.detail import DetailView
 from django.http import HttpResponseNotFound, HttpResponseBadRequest, HttpResponse
+from requests import Response
 from rest_framework import viewsets
 from rest_framework.generics import get_object_or_404
+from rest_framework.response import Response
+from rest_framework import status
 
 from events.models import Event, Agent
 from .serializers import (
@@ -52,13 +55,13 @@ class EventFilter(ListView):
         if self.search_for is not None and self.search_for!="buscaCampo":
             if self.pesquisa_text is not None and not self.pesquisa_text == "":
                 if self.search_for == "level":
-                    self.retorno_query = self.retorno_query.filter(level=self.pesquisa_text)
+                    self.retorno_query = self.retorno_query.filter(level__icontains=self.pesquisa_text)
                 elif self.search_for == "descricao":
-                    self.retorno_query = self.retorno_query.filter(data=self.pesquisa_text)
+                    self.retorno_query = self.retorno_query.filter(data__icontains=self.pesquisa_text)
                 elif self.search_for == "origem":
                     print("origem")
                     print(self.pesquisa_text)
-                    self.retorno_query = self.retorno_query.filter(agent__address=self.pesquisa_text)
+                    self.retorno_query = self.retorno_query.filter(agent__address__icontains=self.pesquisa_text)
 
         if self.orderBy is not None and self.orderBy!="ordenacao":
             if self.orderBy == "level":
@@ -102,3 +105,17 @@ class AgentAPIViewSet(viewsets.ModelViewSet):
 class EventAPIViewSet(viewsets.ModelViewSet):
     queryset = Event.objects.all()
     serializer_class = EventModelSerializer
+
+
+class EventsOfAgentViewSet(viewsets.ModelViewSet):
+    queryset = Agent.objects.all()
+    serializer_class = EventModelSerializer
+
+    def return_events(self, pk=None):
+        queryset = self.queryset.filter(id=pk)
+        if not queryset:
+            print("entra aqui")
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        else:
+            serializer = EventModelSerializer(queryset)
+            return Response(serializer.data, status=status.HTTP_200_OK)

@@ -12,3 +12,4 @@ class EventModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
         fields = ["title", "level", "data", "archived", "date", "agent"]
+

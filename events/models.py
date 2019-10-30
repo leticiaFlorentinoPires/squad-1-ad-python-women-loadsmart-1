@@ -36,7 +36,7 @@ class Agent(models.Model):
 class Event(models.Model):
     LEVEL_CHOICES = [
         (5,"critical"),
-        ( 4,"debug"),
+        (4,"debug"),
         (3,"error"),
         (2,"warning"),
         (1,"information"),

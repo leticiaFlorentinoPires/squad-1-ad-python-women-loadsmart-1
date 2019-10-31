@@ -2,11 +2,11 @@
 
 {% block content %}
 
-    <a href="{% url 'events:list_events' %}" class="btn btn-outline-primary">
+    <a href="{% url 'events:events-list' %}" class="btn btn-outline-primary">
         <i class="fas fa-arrow-left"></i>
     </a>
 
-    <h2> {{ event.level|capfirst }} no {{ event.agent.address }} em {{ event.date }}</h2>
+    <h2> Evento: {{ event.get_level_display |capfirst }}, no endereço {{ event.agent.address }}, em {{ event.date }}</h2>
 
     <div class="container">
         <div class="row">
@@ -16,10 +16,15 @@
                 <h2>Descrição</h2>
                 <p>{{ event.data }}</p>
             </div>
+            </br>
             <div class="col-sm">
-                {{ event.level }} 
+                <h3>Nível</h3>
+                {{ event.get_level_display }}
+                </br>
+                </br>
                 <h3>Eventos</h3>
-                <p>?</p>
+                <p>{{event.frequencia}}</p>
+                </br>
                 <h3>Coletado por</h3>
                 {{ event.agent.user }} 
             </div>

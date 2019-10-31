@@ -4,7 +4,8 @@ from django.views.generic.list import ListView, MultipleObjectMixin
 from django.views.generic.detail import DetailView
 from django.http import HttpResponseNotFound, HttpResponseBadRequest, HttpResponse
 from requests import Response
-from rest_framework import viewsets
+from rest_framework import viewsets, serializers
+from rest_framework.fields import CurrentUserDefault
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 from rest_framework import status
@@ -108,14 +109,41 @@ class EventAPIViewSet(viewsets.ModelViewSet):
 
 
 class EventsOfAgentViewSet(viewsets.ModelViewSet):
-    queryset = Agent.objects.all()
+    queryset = Event.objects.all()
+    # agent = serializers.CharField(read_only=True,default=)
     serializer_class = EventModelSerializer
+    agent_id = None
+    # TODO : iniciar o agent já setado no q ta
 
-    def return_events(self, pk=None):
-        queryset = self.queryset.filter(id=pk)
-        if not queryset:
-            print("entra aqui")
-            return Response(status=status.HTTP_400_BAD_REQUEST)
-        else:
-            serializer = EventModelSerializer(queryset)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+    def list_events_of_agent(self, request, id=None):
+        queryset = self.queryset.filter(agent__id=id)
+        self.agent_id = id
+        serializer = EventModelSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+
+    def include_event_in_agent(self, request, id):
+        serializer = EventModelSerializer(data=request.data)
+        print(request.user)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def partial_update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.serialize(instance, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+
+    def destroy(self, request, *args, **kwargs):
+        doctor = self.get_object()
+        doctor.is_active = False
+        doctor.save()
+        return Response(data='delete success')
+
+
+    class Meta:
+        model = Event
+        fields = '__all__'

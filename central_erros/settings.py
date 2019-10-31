@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     #App de terceiros
     'rest_framework',
     'rest_framework.authtoken',
+    'rest_auth',
     #nossos apps
     'events'
 ]

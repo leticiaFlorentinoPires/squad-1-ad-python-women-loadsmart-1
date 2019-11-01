@@ -18,10 +18,10 @@ class EventModelSerializer(serializers.ModelSerializer):
 class UserModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = '__all'
+        fields = "__all__"
 
 
 class GroupModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Group
-        fields = '__all'
+        fields = "__all__"

@@ -6,8 +6,8 @@ from events.views import EventsListView, EventFilter, EventDetail
 router = routers.DefaultRouter()
 router.register(r'events', views.EventAPIViewSet)
 router.register(r'agents', views.AgentAPIViewSet)
-router.register(r'users', views.AgentAPIViewSet)
-router.register(r'groups', views.AgentAPIViewSet)
+router.register(r'users', views.UserAPIViewSet)
+router.register(r'groups', views.GroupAPIViewSet)
 agent_id_event_id = views.EventOfIdViewSet.as_view(
     {'get': 'event_id_agent_id'}
 )

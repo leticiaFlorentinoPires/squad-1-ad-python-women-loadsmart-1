@@ -11,8 +11,8 @@ from django.contrib.auth.models import Group
 from events.models import Event, Agent
 from .serializers import (
     EventModelSerializer,
-    AgentModelSerializer
-)
+    AgentModelSerializer,
+    GroupModelSerializer, UserModelSerializer)
 
 
 class EventsListView(ListView):
@@ -103,17 +103,18 @@ class AgentAPIViewSet(viewsets.ModelViewSet):
 
 class UserAPIViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
-    serializer_class = AgentModelSerializer
+    serializer_class = UserModelSerializer
 
 
 class GroupAPIViewSet(viewsets.ModelViewSet):
     queryset = Group.objects.all()
-    serializer_class = EventModelSerializer
+    serializer_class = GroupModelSerializer
 
 
 class EventAPIViewSet(viewsets.ModelViewSet):
     queryset = Group.objects.all()
     serializer_class = EventModelSerializer
+
 
 class EventOfIdViewSet(viewsets.ModelViewSet):
     queryset = Event.objects.all()
@@ -128,3 +129,4 @@ class EventOfIdViewSet(viewsets.ModelViewSet):
         serializer = EventModelSerializer(queryset,many=True)
         print(serializer.data)
         return Response(serializer.data)
+

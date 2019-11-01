@@ -3,9 +3,11 @@ from django.shortcuts import render
 from django.views.generic.list import ListView, MultipleObjectMixin
 from django.views.generic.detail import DetailView
 from django.http import HttpResponseNotFound, HttpResponseBadRequest, HttpResponse
+from requests import Response
 from rest_framework import viewsets
 from rest_framework.generics import get_object_or_404
-
+from django.contrib.auth.models import User
+from django.contrib.auth.models import Group
 from events.models import Event, Agent
 from .serializers import (
     EventModelSerializer,
@@ -99,6 +101,30 @@ class AgentAPIViewSet(viewsets.ModelViewSet):
     serializer_class = AgentModelSerializer
 
 
+class UserAPIViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = AgentModelSerializer
+
+
+class GroupAPIViewSet(viewsets.ModelViewSet):
+    queryset = Group.objects.all()
+    serializer_class = EventModelSerializer
+
+
 class EventAPIViewSet(viewsets.ModelViewSet):
+    queryset = Group.objects.all()
+    serializer_class = EventModelSerializer
+
+class EventOfIdViewSet(viewsets.ModelViewSet):
     queryset = Event.objects.all()
     serializer_class = EventModelSerializer
+    # TODO : iniciar o agent já setado no q ta
+
+
+    def event_id_agent_id(self,request, **kwargs):
+        queryset = self.queryset.filter(id=kwargs['id_event'])
+        queryset = queryset.filter(agent__id=kwargs['id_agent'])
+        print(queryset)
+        serializer = EventModelSerializer(queryset,many=True)
+        print(serializer.data)
+        return Response(serializer.data)

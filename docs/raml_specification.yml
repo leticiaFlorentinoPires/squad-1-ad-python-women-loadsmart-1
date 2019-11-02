@@ -1,0 +1,1170 @@
+#%RAML 1.0
+title: codenation_api
+securedBy: JWT
+description: "boa api"
+version: v3
+baseUri: https://api.github.com
+mediaType:  application/json
+
+
+securitySchemes:
+  JWT:
+    type: x-vi-auth
+    description:
+      Vimana aquired JWT
+    describedBy:
+      headers:
+        Authorization:
+          type: string
+          description: The JWT token, eg 'bearer ad4839cf-3adfafz-JJDND'
+
+      responses:
+        401:
+          description: |
+              Bad or expired token. This can happen if the user or Vimana
+              revoked or expired an access token. To fix, re-authenticate
+              the user.
+        403:
+          description: |
+              Deu ruim
+
+types:
+  Agent:
+    properties:
+      address:
+        description: ip address
+        example: 127.0.0.1
+        type: string
+        minLength: 2
+        maxLength: 20
+      environment:
+        description: enviroment where the event happened
+        example: production
+        type: string
+        minLength: 2
+        maxLength: 20
+      id:
+        description: agent id
+        format: int64
+        type: integer
+      status:
+        description: status of agent
+        example: true
+        type: boolean
+      user_id:
+        description: user associated with this agent
+        type: integer
+      version:
+        description: version of agent machine
+        example: 1.1.1
+        type: string
+        minLength: 2
+        maxLength: 6
+
+    type: object
+    xml:
+      name: Agent
+    description: "oioioi"
+    example: { address: "xxx", environment: "xxx", id: 12, status: true, user_id: 12, version: "xxx"}
+    discriminator: id
+    
+  Auth:
+    description: "oioioi"
+    discriminator: token
+    properties:
+      token: #/securitySchemes/JWT
+    type: object
+    example: {token: " ad4839cf-3adfafz-JJDND"}
+
+  Event:
+    description: "oioioi"
+    properties:
+      agent_id:
+        description: agent associeted
+        type: integer
+      date:
+        description: date of event
+        example : "11/07/1289"
+        type: string
+        minLength: 2
+        maxLength: 20
+      id:
+        description: user id
+        format: int64
+        type: integer
+      level:
+        description: level of event
+        example: warning
+        type: string
+        minLength: 2
+        maxLength: 20
+      payload:
+        description: payload of event
+        example: date came from computer 1
+        minLength: 2
+        maxLength: 2200
+        type: string
+      shelve:
+        description: Event Status
+        example: true
+        type: boolean
+    type: object
+    xml:
+      name: Event
+    example: {agent_id: 12, date: "xxx", id: 12, level: "ss", payload: "asas", shelve: true}
+    discriminator: id
+
+  Group:
+    description: "oioioi"
+    properties:
+      id:
+        format: int64
+        type: integer
+      name:
+        example: internship
+        type: string
+        minLength: 2
+        maxLength: 20
+    type: object
+    example: {id: 12, name: "sss"}
+    discriminator: id
+
+  User:
+    description: "oioioi"
+    properties:
+      email:
+        example: joao@gmail.com
+        type: string
+        minLength: 2
+        maxLength: 20
+      id:
+        description: user id
+        example: 1
+        format: int64
+        type: integer
+      last_login:
+        example: 11/04/1992
+        type: string
+        minLength: 2
+        maxLength: 20
+      name:
+        description: user name
+        example: Joao
+        type: string
+        minLength: 2
+        maxLength: 20
+      password:
+        example: '123456'
+        type: string
+        minLength: 2
+        maxLength: 20
+    type: object
+    xml:
+      name: User
+    example: {id: 12, email: "aa@aa.com", last_login: "1212",  name: "sss", password: "oioi"}
+    discriminator: id
+
+  UserGroup:
+    description: "oioioi"
+    properties:
+      group_id:
+        description: group id associeted with
+        type: integer
+      id:
+        description: user group id
+        format: int64
+        type: integer
+      user_id:
+        description: user id associeted with
+        type: integer
+    type: object
+    xml:
+      name: UserGroup
+    example: {id: 12, group_id: 12, user_id: 12}
+    discriminator: id
+  
+/agents:
+  securedBy: [JWT]
+  description: Return employee information on basis of EmployeeID
+  get:
+    securedBy: [JWT]
+    description: Get a list of songs based on the song title.
+    queryParameters:
+      address:
+        description: ip address
+        example: 127.0.0.1
+        type: string
+      environment:
+        description: enviroment where the event happened
+        example: production
+        type: string
+      id:
+        description: agent id
+        format: int64
+        type: integer
+      status:
+        description: status of agent
+        example: true
+        type: boolean
+      user_id:
+        description: user associated with this agent
+        type: object
+      version:
+        description: version of agent machine
+        example: 1.1.1
+        type: string
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+                  { address: "xxx", environment: "xxx", id: 12, status: true, user_id: 12, version: "xxx"}
+      201:            
+        body:
+          application/json:
+            example: |
+              { address: "xxx", environment: "xxx", id: 12, status: true, user_id: 12, version: "xxx"}
+      404:
+          body:
+            application/json:
+              example: |
+                {"message": "Song not found"}
+  post:
+    securedBy: [JWT]
+    description: |
+      Add a new song to Jukebox.
+    queryParameters:
+      access_token:
+        description: "The access token provided by the authentication application"
+        example: AABBCCDD 
+        required: true
+        type: string
+    body:
+      application/json:
+        type: Agent
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              { "message": "The song has been properly entered" }
+  put:
+    securedBy: [JWT]
+    queryParameters:
+      access_token:
+        displayName: Access Token
+        type: string
+        description: Token giving you permission to make call
+        required: true
+  delete:
+    securedBy: [JWT]
+    queryParameters:
+      access_token:
+        displayName: Access Token
+        type: string
+        description: Token giving you permission to make call
+        required: true
+  /{id}:
+    securedBy: [JWT]
+    description: Return employee information on basis of EmployeeID
+    get:
+      securedBy: [JWT]
+      description: Get a list of songs based on the song title.
+      queryParameters:
+        songTitle:
+          description: "The title of the song to search (it is case insensitive and doesn't need to match the whole title)"
+          required: true
+          minLength: 3
+          type: string
+          example: "Get L"
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                { address: "xxx", environment: "xxx", id: 12, status: true, user_id: 12, version: "xxx"}
+        201:            
+          body:
+            application/json:
+              example: |
+                { address: "xxx", environment: "xxx", id: 12, status: true, user_id: 12, version: "xxx"}
+
+        404:
+            body:
+              application/json:
+                example: |
+                  {"message": "Song not found"}
+    post:
+      securedBy: [JWT]
+      description: |
+        Add a new song to Jukebox.
+      queryParameters:
+        access_token:
+          description: "The access token provided by the authentication application"
+          example: AABBCCDD 
+          required: true
+          type: string
+      body:
+        application/json:
+          type: Agent
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                { "message": "The song has been properly entered" }
+    put:
+      securedBy: [JWT]
+      queryParameters:
+        access_token:
+          displayName: Access Token
+          type: string
+          description: Token giving you permission to make call
+          required: true
+    delete:
+      securedBy: [JWT]
+      queryParameters:
+        access_token:
+          displayName: Access Token
+          type: string
+          description: Token giving you permission to make call
+          required: true  
+  /{id}/events:
+    securedBy: [JWT]
+    description: "oioioi"
+    get:
+      securedBy: [JWT]
+      description: Get a list of songs based on the song title.
+      queryParameters:
+        songTitle:
+          description: "The title of the song to search (it is case insensitive and doesn't need to match the whole title)"
+          required: true
+          minLength: 3
+          type: string
+          example: "Get L"
+      responses:
+        201:            
+          body:
+            application/json:
+              example: |
+               {agent_id: 12, date: "xxx", id: 12, level: "ss", payload: "asas", shelve: true}
+        200:
+          body:
+            application/json:
+              example: |
+                {agent_id: 12, date: "xxx", id: 12, level: "ss", payload: "asas", shelve: true}
+        404:
+            body:
+              application/json:
+                example: |
+                  {"message": "Song not found"}
+    post:
+      securedBy: [JWT]
+      description: |
+        Add a new song to Jukebox.
+      queryParameters:
+        access_token:
+          description: "The access token provided by the authentication application"
+          example: AABBCCDD 
+          required: true
+          type: string
+      body:
+        application/json:
+          type: Agent
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                { "message": "The song has been properly entered" }
+    put:
+      securedBy: [JWT]
+      queryParameters:
+        access_token:
+          displayName: Access Token
+          type: string
+          description: Token giving you permission to make call
+          required: true
+    delete:
+      securedBy: [JWT]
+      queryParameters:
+        access_token:
+          displayName: Access Token
+          type: string
+          description: Token giving you permission to make call
+          required: true 
+        
+    /{id}:
+      securedBy: [JWT]
+      description: "oioioi"
+      get:
+        securedBy: [JWT]
+        description: Get a list of songs based on the song title.
+        queryParameters:
+          songTitle:
+            description: "The title of the song to search (it is case insensitive and doesn't need to match the whole title)"
+            required: true
+            minLength: 3
+            type: string
+            example: "Get L"
+        responses:
+          201:            
+              body:
+                application/json:
+                  example: |
+                    {agent_id: 12, date: "xxx", id: 12, level: "ss", payload: "asas", shelve: true}
+          
+          200:
+            body:
+              application/json:
+                example: |
+                  {agent_id: 12, date: "xxx", id: 12, level: "ss", payload: "asas", shelve: true}
+          404:
+              body:
+                application/json:
+                  example: |
+                    {"message": "Song not found"}
+      post:
+        securedBy: [JWT]
+        description: |
+          Add a new song to Jukebox.
+        queryParameters:
+          access_token:
+            description: "The access token provided by the authentication application"
+            example: AABBCCDD 
+            required: true
+            type: string
+        body:
+          application/json:
+            type: Agent
+        responses:
+          200:
+            body:
+              application/json:
+                example: |
+                  { "message": "The song has been properly entered" }
+      put:
+        securedBy: [JWT]
+        queryParameters:
+          access_token:
+            displayName: Access Token
+            type: string
+            description: Token giving you permission to make call
+            required: true
+      delete:
+        securedBy: [JWT]
+        queryParameters:
+          access_token:
+            displayName: Access Token
+            type: string
+            description: Token giving you permission to make call
+            required: true  
+
+/groups:
+  securedBy: [JWT]
+  description: Return employee information on basis of EmployeeID
+  get:
+    securedBy: [JWT]
+    description: Get a list of songs based on the song title.
+    queryParameters:
+      songTitle:
+        description: "The title of the song to search (it is case insensitive and doesn't need to match the whole title)"
+        required: true
+        minLength: 3
+        type: string
+        example: "Get L"
+    responses:
+        201:            
+          body:
+            application/json:
+              example: |
+                 {id: 12, name: "sss"}  
+
+        200:
+          body:
+            application/json:
+              example: |
+                 {id: 12, name: "sss"}
+        404:
+            body:
+              application/json:
+                example: |
+                  {"message": "Song not found"}
+  post:
+    securedBy: [JWT]
+    description: |
+      Add a new song to Jukebox.
+    queryParameters:
+      access_token:
+        description: "The access token provided by the authentication application"
+        example: AABBCCDD 
+        required: true
+        type: string
+    body:
+      application/json:
+        type: Agent
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+                { "message": "The song has been properly entered" }
+  put:
+    securedBy: [JWT]
+    queryParameters:
+      access_token:
+        displayName: Access Token
+        type: string
+        description: Token giving you permission to make call
+        required: true
+  delete:
+    securedBy: [JWT]
+    queryParameters:
+      access_token:
+        displayName: Access Token
+        type: string
+        description: Token giving you permission to make call
+        required: true
+  /{id}:
+    securedBy: [JWT]
+    description: Return employee information on basis of EmployeeID
+    get:
+      securedBy: [JWT]
+      description: Get a list of songs based on the song title.
+      queryParameters:
+        songTitle:
+          description: "The title of the song to search (it is case insensitive and doesn't need to match the whole title)"
+          required: true
+          minLength: 3
+          type: string
+          example: "Get L"
+      responses:
+        201:            
+          body:
+            application/json:
+              example: |
+                 {id: 12, name: "sss"}
+
+        200:
+          body:
+            application/json:
+              example: |
+                 {id: 12, name: "sss"}
+        404:
+            body:
+              application/json:
+                example: |
+                  {"message": "Song not found"}
+    post:
+      securedBy: [JWT]
+      description: |
+        Add a new song to Jukebox.
+      queryParameters:
+        access_token:
+          description: "The access token provided by the authentication application"
+          example: AABBCCDD 
+          required: true
+          type: string
+      body:
+        application/json:
+          type: Agent
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                { "message": "The song has been properly entered" }
+    put:
+      securedBy: [JWT]
+      queryParameters:
+        access_token:
+          displayName: Access Token
+          type: string
+          description: Token giving you permission to make call
+          required: true
+    delete:
+      securedBy: [JWT]
+      queryParameters:
+        access_token:
+          displayName: Access Token
+          type: string
+          description: Token giving you permission to make call
+          required: true
+
+/users:
+  securedBy: [JWT]
+  description: Return employee information on basis of EmployeeID
+  get:
+    securedBy: [JWT]
+    description: Get a list of songs based on the song title.
+    queryParameters:
+      songTitle:
+        description: "The title of the song to search (it is case insensitive and doesn't need to match the whole title)"
+        required: true
+        minLength: 3
+        type: string
+        example: "Get L"
+    responses:
+      201:            
+        body:
+          application/json:
+            example: |
+              {id: 12, email: "aa@aa.com", last_login: "1212",  name: "sss", password: "oioi"}
+
+      200:
+        body:
+          application/json:
+            example: |
+              {id: 12, email: "aa@aa.com", last_login: "1212",  name: "sss", password: "oioi"}
+      404:
+          body:
+            application/json:
+              example: |
+                {"message": "Song not found"}
+  post:
+    securedBy: [JWT]
+    description: |
+      Add a new song to Jukebox.
+    queryParameters:
+      access_token:
+        description: "The access token provided by the authentication application"
+        example: AABBCCDD 
+        required: true
+        type: string
+    body:
+      application/json:
+        type: Agent
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              { "message": "The song has been properly entered" }
+  put:
+    securedBy: [JWT]
+    queryParameters:
+      access_token:
+        displayName: Access Token
+        type: string
+        description: Token giving you permission to make call
+        required: true
+  delete:
+    securedBy: [JWT]
+    queryParameters:
+      access_token:
+        displayName: Access Token
+        type: string
+        description: Token giving you permission to make call
+        required: true  
+    
+  /{id}:
+    securedBy: [JWT]
+    description: Return employee information on basis of EmployeeID
+    get:
+      securedBy: [JWT]
+      description: Get a list of songs based on the song title.
+      queryParameters:
+        songTitle:
+          description: "The title of the song to search (it is case insensitive and doesn't need to match the whole title)"
+          required: true
+          minLength: 3
+          type: string
+          example: "Get L"
+      responses:
+        201:            
+          body:
+            application/json:
+              example: |
+               {id: 12, email: "aa@aa.com", last_login: "1212",  name: "sss", password: "oioi"}
+        200:
+          body:
+            application/json:
+              example: |
+                {id: 12, email: "aa@aa.com", last_login: "1212",  name: "sss", password: "oioi"}
+        404:
+            body:
+              application/json:
+                example: |
+                  {"message": "Song not found"}
+    post:
+      securedBy: [JWT]
+      description: |
+        Add a new song to Jukebox.
+      queryParameters:
+        access_token:
+          description: "The access token provided by the authentication application"
+          example: AABBCCDD 
+          required: true
+          type: string
+      body:
+        application/json:
+          type: Agent
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                { "message": "The song has been properly entered" }
+    put:
+      securedBy: [JWT]
+      queryParameters:
+        access_token:
+          displayName: Access Token
+          type: string
+          description: Token giving you permission to make call
+          required: true
+    delete:
+      securedBy: [JWT]
+      queryParameters:
+        access_token:
+          displayName: Access Token
+          type: string
+          description: Token giving you permission to make call
+          required: true  
+
+/auth:
+  securedBy: [JWT]
+  description: "oioioi"
+  get:
+    securedBy: [JWT]
+    description: Get a list of songs based on the song title.
+    queryParameters:
+      songTitle:
+        description: "The title of the song to search (it is case insensitive and doesn't need to match the whole title)"
+        required: true
+        minLength: 3
+        type: string
+        example: "Get L"
+    responses:
+      201:            
+          body:
+            application/json:
+              example: |
+                {
+                  "songs": [
+                    {
+                      "songId": "550e8400-e29b-41d4-a716-446655440000",
+                      "songTitle": "Get Lucky"
+                    },
+                    {
+                      "songId": "550e8400-e29b-41d4-a716-446655440111",
+                      "songTitle": "Loose yourself to dance"
+                    },
+                    {
+                      "songId": "550e8400-e29b-41d4-a716-446655440222",
+                      "songTitle": "Gio sorgio by Moroder"
+                    }
+                  ]
+                }    
+  
+      200:
+        body:
+          application/json:
+            example: |
+              {
+                "songs": [
+                  {
+                    "songId": "550e8400-e29b-41d4-a716-446655440000",
+                    "songTitle": "Get Lucky"
+                  },
+                  {
+                    "songId": "550e8400-e29b-41d4-a716-446655440111",
+                    "songTitle": "Loose yourself to dance"
+                  },
+                  {
+                    "songId": "550e8400-e29b-41d4-a716-446655440222",
+                    "songTitle": "Gio sorgio by Moroder"
+                  }
+                ]
+              }
+      404:
+          body:
+            application/json:
+              example: |
+                {"message": "Song not found"}
+  post:
+    securedBy: [JWT]
+    description: |
+      Add a new song to Jukebox.
+    queryParameters:
+      access_token:
+        description: "The access token provided by the authentication application"
+        example: AABBCCDD 
+        required: true
+        type: string
+    body:
+      application/json:
+        type: Agent
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              { "message": "The song has been properly entered" }
+  put:
+    securedBy: [JWT]
+    queryParameters:
+      access_token:
+        displayName: Access Token
+        type: string
+        description: Token giving you permission to make call
+        required: true
+  delete:
+    securedBy: [JWT]
+    queryParameters:
+      access_token:
+        displayName: Access Token
+        type: string
+        description: Token giving you permission to make call
+        required: true
+  /{id}:
+    securedBy: [JWT]
+    description: "oioioi"
+    get:
+      securedBy: [JWT]
+      description: Get a list of songs based on the song title.
+      queryParameters:
+        songTitle:
+          description: "The title of the song to search (it is case insensitive and doesn't need to match the whole title)"
+          required: true
+          minLength: 3
+          type: string
+          example: "Get L"
+      responses:
+        201:            
+            body:
+              application/json:
+                example: |
+                  {
+                    "songs": [
+                      {
+                        "songId": "550e8400-e29b-41d4-a716-446655440000",
+                        "songTitle": "Get Lucky"
+                      },
+                      {
+                        "songId": "550e8400-e29b-41d4-a716-446655440111",
+                        "songTitle": "Loose yourself to dance"
+                      },
+                      {
+                        "songId": "550e8400-e29b-41d4-a716-446655440222",
+                        "songTitle": "Gio sorgio by Moroder"
+                      }
+                    ]
+                  }    
+    
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                  "songs": [
+                    {
+                      "songId": "550e8400-e29b-41d4-a716-446655440000",
+                      "songTitle": "Get Lucky"
+                    },
+                    {
+                      "songId": "550e8400-e29b-41d4-a716-446655440111",
+                      "songTitle": "Loose yourself to dance"
+                    },
+                    {
+                      "songId": "550e8400-e29b-41d4-a716-446655440222",
+                      "songTitle": "Gio sorgio by Moroder"
+                    }
+                  ]
+                }
+        404:
+            body:
+              application/json:
+                example: |
+                  {"message": "Song not found"}
+    post:
+      securedBy: [JWT]
+      description: |
+        Add a new song to Jukebox.
+      queryParameters:
+        access_token:
+          description: "The access token provided by the authentication application"
+          example: AABBCCDD 
+          required: true
+          type: string
+      body:
+        application/json:
+          type: Agent
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                { "message": "The song has been properly entered" }
+    put:
+      securedBy: [JWT]
+      queryParameters:
+        access_token:
+          displayName: Access Token
+          type: string
+          description: Token giving you permission to make call
+          required: true
+    delete:
+      securedBy: [JWT]
+      queryParameters:
+        access_token:
+          displayName: Access Token
+          type: string
+          description: Token giving you permission to make call
+          required: true      
+/auth/token:
+  securedBy: [JWT]
+  description: Return employee information on basis of EmployeeID
+  get:
+    securedBy: [JWT]
+    description: Get a list of songs based on the song title.
+    queryParameters:
+      songTitle:
+        description: "The title of the song to search (it is case insensitive and doesn't need to match the whole title)"
+        required: true
+        minLength: 3
+        type: string
+        example: "Get L"
+    responses:
+      201:            
+          body:
+            application/json:
+              example: |
+                {token: " ad4839cf-3adfafz-JJDND"}
+  
+      200:
+        body:
+          application/json:
+            example: |
+              {token: " ad4839cf-3adfafz-JJDND"}
+      404:
+          body:
+            application/json:
+              example: |
+                {"message": "Song not found"}
+  post:
+    securedBy: [JWT]
+    description: |
+      Add a new song to Jukebox.
+    queryParameters:
+      access_token:
+        description: "The access token provided by the authentication application"
+        example: AABBCCDD 
+        required: true
+        type: string
+    body:
+      application/json:
+        type: Agent
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              { "message": "The song has been properly entered" }
+  put:
+    securedBy: [JWT]
+    queryParameters:
+      access_token:
+        displayName: Access Token
+        type: string
+        description: Token giving you permission to make call
+        required: true
+  delete:
+    securedBy: [JWT]
+    queryParameters:
+      access_token:
+        displayName: Access Token
+        type: string
+        description: Token giving you permission to make call
+        required: true  
+  /{id}:
+    securedBy: [JWT]
+    description: "oioioi"
+    get:
+      securedBy: [JWT]
+      description: Get a list of songs based on the song title.
+      queryParameters:
+        songTitle:
+          description: "The title of the song to search (it is case insensitive and doesn't need to match the whole title)"
+          required: true
+          minLength: 3
+          type: string
+          example: "Get L"
+      responses:
+        201:            
+            body:
+              application/json:
+                example: |
+                  {
+                    "songs": [
+                      {
+                        "songId": "550e8400-e29b-41d4-a716-446655440000",
+                        "songTitle": "Get Lucky"
+                      },
+                      {
+                        "songId": "550e8400-e29b-41d4-a716-446655440111",
+                        "songTitle": "Loose yourself to dance"
+                      },
+                      {
+                        "songId": "550e8400-e29b-41d4-a716-446655440222",
+                        "songTitle": "Gio sorgio by Moroder"
+                      }
+                    ]
+                  }    
+    
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                  "songs": [
+                    {
+                      "songId": "550e8400-e29b-41d4-a716-446655440000",
+                      "songTitle": "Get Lucky"
+                    },
+                    {
+                      "songId": "550e8400-e29b-41d4-a716-446655440111",
+                      "songTitle": "Loose yourself to dance"
+                    },
+                    {
+                      "songId": "550e8400-e29b-41d4-a716-446655440222",
+                      "songTitle": "Gio sorgio by Moroder"
+                    }
+                  ]
+                }
+        404:
+            body:
+              application/json:
+                example: |
+                  {"message": "Song not found"}
+    post:
+      securedBy: [JWT]
+      description: |
+        Add a new song to Jukebox.
+      queryParameters:
+        access_token:
+          description: "The access token provided by the authentication application"
+          example: AABBCCDD 
+          required: true
+          type: string
+      body:
+        application/json:
+          type: Agent
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                { "message": "The song has been properly entered" }
+    put:
+      securedBy: [JWT]
+      queryParameters:
+        access_token:
+          displayName: Access Token
+          type: string
+          description: Token giving you permission to make call
+          required: true
+    delete:
+      securedBy: [JWT]
+      queryParameters:
+        access_token:
+          displayName: Access Token
+          type: string
+          description: Token giving you permission to make call
+          required: true 
+   
+/user/groups/:
+  get:
+    securedBy: [JWT]
+    description: Get a list of songs based on the song title.
+    queryParameters:
+      songTitle:
+        description: "The title of the song to search (it is case insensitive and doesn't need to match the whole title)"
+        required: true
+        minLength: 3
+        type: string
+        example: "Get L"
+    responses:
+      201:            
+          body:
+            application/json:
+              example: |
+                {
+                  "songs": [
+                    {
+                      "songId": "550e8400-e29b-41d4-a716-446655440000",
+                      "songTitle": "Get Lucky"
+                    },
+                    {
+                      "songId": "550e8400-e29b-41d4-a716-446655440111",
+                      "songTitle": "Loose yourself to dance"
+                    },
+                    {
+                      "songId": "550e8400-e29b-41d4-a716-446655440222",
+                      "songTitle": "Gio sorgio by Moroder"
+                    }
+                  ]
+                }    
+  
+      200:
+        body:
+          application/json:
+            example: |
+              {
+                "songs": [
+                  {
+                    "songId": "550e8400-e29b-41d4-a716-446655440000",
+                    "songTitle": "Get Lucky"
+                  },
+                  {
+                    "songId": "550e8400-e29b-41d4-a716-446655440111",
+                    "songTitle": "Loose yourself to dance"
+                  },
+                  {
+                    "songId": "550e8400-e29b-41d4-a716-446655440222",
+                    "songTitle": "Gio sorgio by Moroder"
+                  }
+                ]
+              }
+      404:
+          body:
+            application/json:
+              example: |
+                {"message": "Song not found"}
+  post:
+    securedBy: [JWT]
+    description: |
+      Add a new song to Jukebox.
+    queryParameters:
+      access_token:
+        description: "The access token provided by the authentication application"
+        example: AABBCCDD 
+        required: true
+        type: string
+    body:
+      application/json:
+        type: Agent
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              { "message": "The song has been properly entered" }
+  put:
+    securedBy: [JWT]
+    queryParameters:
+      access_token:
+        displayName: Access Token
+        type: string
+        description: Token giving you permission to make call
+        required: true
+  delete:
+    securedBy: [JWT]
+    queryParameters:
+      access_token:
+        displayName: Access Token
+        type: string
+        description: Token giving you permission to make call
+        required: true  
+
+

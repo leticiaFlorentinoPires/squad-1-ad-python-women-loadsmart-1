@@ -9,6 +9,8 @@ from rest_framework.generics import get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth.models import Group
 from events.models import Event, Agent
+from rest_framework_extensions.mixins import NestedViewSetMixin
+
 from .serializers import (
     EventModelSerializer,
     AgentModelSerializer,
@@ -96,7 +98,7 @@ class EventDetail(DetailView):
         return render(request, 'events/detail.html', context=context)
 
 
-class AgentAPIViewSet(viewsets.ModelViewSet):
+class AgentAPIViewSet(NestedViewSetMixin, viewsets.ModelViewSet):
     queryset = Agent.objects.all()
     serializer_class = AgentModelSerializer
 
@@ -111,22 +113,25 @@ class GroupAPIViewSet(viewsets.ModelViewSet):
     serializer_class = GroupModelSerializer
 
 
-class EventAPIViewSet(viewsets.ModelViewSet):
-    queryset = Group.objects.all()
-    serializer_class = EventModelSerializer
-
-
-class EventOfIdViewSet(viewsets.ModelViewSet):
+class EventAPIViewSet(NestedViewSetMixin, viewsets.ModelViewSet):
     queryset = Event.objects.all()
     serializer_class = EventModelSerializer
-    # TODO : iniciar o agent já setado no q ta
 
 
-    def event_id_agent_id(self,request, **kwargs):
-        queryset = self.queryset.filter(id=kwargs['id_event'])
-        queryset = queryset.filter(agent__id=kwargs['id_agent'])
-        print(queryset)
-        serializer = EventModelSerializer(queryset,many=True)
-        print(serializer.data)
-        return Response(serializer.data)
+
+#in case of future consultances
+# class EventsAgentViewSet(NestedViewSetMixin, viewsets.ViewSet):
+#     serializer_class = EventModelSerializer
+#     queryset = Event.objects.all()
+#
+#     def list(self, request, pk=None):
+#         queryset = Event.objects.filter(agent__id=pk)
+#         serializer = EventModelSerializer(queryset, many=True)
+#         return Response(serializer.data)
+#
+#     def retrieve(self, request, pk=None, event_pk=None):
+#         queryset = Event.objects.filter(agent__id=pk, id=event_pk)
+#         maildrop = get_object_or_404(queryset, pk=pk)
+#         serializer = EventModelSerializer(maildrop)
+#         return Response(serializer.data)
 

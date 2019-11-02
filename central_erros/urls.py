@@ -24,8 +24,7 @@ urlpatterns = [
     path('events/', include(('events.urls', 'events'), namespace='events')),
     path('get_token', obtain_auth_token),
     #username e pass
-    path('rest-auth/login/', TemplateView.as_view(template_name="login.html"),
-        name='login'),
-    path('rest-auth/', include('rest_auth.urls'))
+    #path('rest-auth/', include('rest_auth.urls')),
+    path('account/', include('django.contrib.auth.urls')),
     
 ]

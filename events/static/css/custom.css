@@ -94,3 +94,39 @@ color: white;
 .links a{
 margin-left: 4px;
 }
+
+/*signup*/
+
+.form-signup{
+    margin: 0 auto;
+    border-radius: 0.3em;
+    background-color: rgba(0,0,0,0.5) !important;
+    /*background-color: #f2f2f2;*/
+}
+
+.form-signup h2 { 
+    font-family: 'Open Sans' , sans-serif;
+    font-size: 40px;
+    font-weight: 600;
+    color: white;
+    margin-top: 5%;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+}
+.card-signup{
+    margin-top: auto;
+    margin-bottom: auto;
+    padding: 35px;
+    max-width: 550px;
+    background-color: rgba(0,0,0,0.5) !important;
+}
+
+.card-body-signup{
+    color: white;
+    margin-top: 25px;
+}
+
+.control-label {
+    margin: 2%;
+}

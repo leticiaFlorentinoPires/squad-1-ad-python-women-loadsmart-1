@@ -23,8 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('events/', include(('events.urls', 'events'), namespace='events')),
     path('get_token', obtain_auth_token),
-    #username e pass
-    #path('rest-auth/', include('rest_auth.urls')),
     path('account/', include('django.contrib.auth.urls')),
+    path('account/', include('account.urls')), 
     
 ]

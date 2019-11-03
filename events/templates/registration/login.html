@@ -1,59 +1,42 @@
-<!-- templates/registration/login.html -->
-{% load static %}
-<html>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>SQUAD 1 - Central de Erros - {% block title %}2019{% endblock %}</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/custom.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/font-awesome.min.css' %}">
-    <body class="container-fluid page-login">
-        <div id="content" class="container" style="height: 100%; align-content: center; margin-top: 1%;">
-            <div class="d-flex justify-content-center h-100">
-                <div class="card">
-                    <div class="card-header">
-                        <h3>Login</h3>
+{% extends "registration/baseLogin.html" %}
+
+{% block content %}
+<div class="d-flex justify-content-center h-100">
+    <div class="card">
+        <div class="card-header">
+            <h3>Login</h3>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                <div class="input-group form-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fas fa-user"></i></span>
                     </div>
-                    <div class="card-body">
-                        <form method="post">
-                            {% csrf_token %}
-                            <div class="input-group form-group">
-                                <div class="input-group-prepend">
-                                  <span class="input-group-text"><i class="fas fa-user"></i></span>
-                                </div>
-                                <input type="text" class="form-control" placeholder="username" id="username" name="username">
-                                
-                              </div>
-                              <div class="input-group form-group">
-                                  <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fas fa-key"></i></span>
-                                  </div>
-                                  <input id="password" name="password" type="password" class="form-control" placeholder="password">
-                                </div>
-                              
-                                <div class="row align-items-center remember">
-                                    <input type="checkbox">Remember Me
-                                  </div>
-                                  <div class="form-group">
-                                    <input type="submit" value="Login" class="btn float-right login_btn">
-                                  </div>
-                        </form>
-                    </div>
-                    <div class="card-footer">
-                        <div class="d-flex justify-content-center links">
-                            Novo Usuário?<a href="#">Registrar aqui</a>
-                        </div>
-                        <div class="d-flex justify-content-center">
-                          <a href="#">Esqueceu a senha?</a>
-                        </div>
-                      </div>
+                    <input type="text" class="form-control" placeholder="username" id="username" name="username">
                 </div>
+                <div class="input-group form-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fas fa-key"></i></span>
+                    </div>
+                    <input id="password" name="password" type="password" class="form-control" placeholder="password">
+                </div>
+                <div class="row align-items-center remember">
+                    <input type="checkbox">Remember Me
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Login" class="btn float-right login_btn">
+                </div>
+            </form>
+        </div>
+        <div class="card-footer">
+            <div class="d-flex justify-content-center links">
+                Novo Usuário?<a href="{% url 'signup' %}">Registrar aqui</a>
+            </div>
+            <div class="d-flex justify-content-center">
+                <a href="{% url 'password_reset' %}">Esqueceu a senha?</a>
             </div>
         </div>
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-        <script src="{% static 'js/bootstrap.min.js' %}"></script>
-    </body>
-</html>
-
-
+    </div>
+</div>
+{% endblock %}

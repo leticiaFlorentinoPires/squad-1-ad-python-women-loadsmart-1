@@ -3,14 +3,18 @@ from django.shortcuts import render
 from django.views.generic.list import ListView, MultipleObjectMixin
 from django.views.generic.detail import DetailView
 from django.http import HttpResponseNotFound, HttpResponseBadRequest, HttpResponse
+from requests import Response
 from rest_framework import viewsets
 from rest_framework.generics import get_object_or_404
-
+from django.contrib.auth.models import User
+from django.contrib.auth.models import Group
 from events.models import Event, Agent
+from rest_framework_extensions.mixins import NestedViewSetMixin
+
 from .serializers import (
     EventModelSerializer,
-    AgentModelSerializer
-)
+    AgentModelSerializer,
+    GroupModelSerializer, UserModelSerializer)
 
 
 class EventsListView(ListView):
@@ -94,11 +98,40 @@ class EventDetail(DetailView):
         return render(request, 'events/detail.html', context=context)
 
 
-class AgentAPIViewSet(viewsets.ModelViewSet):
+class AgentAPIViewSet(NestedViewSetMixin, viewsets.ModelViewSet):
     queryset = Agent.objects.all()
     serializer_class = AgentModelSerializer
 
 
-class EventAPIViewSet(viewsets.ModelViewSet):
+class UserAPIViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserModelSerializer
+
+
+class GroupAPIViewSet(viewsets.ModelViewSet):
+    queryset = Group.objects.all()
+    serializer_class = GroupModelSerializer
+
+
+class EventAPIViewSet(NestedViewSetMixin, viewsets.ModelViewSet):
     queryset = Event.objects.all()
     serializer_class = EventModelSerializer
+
+
+
+#in case of future consultances
+# class EventsAgentViewSet(NestedViewSetMixin, viewsets.ViewSet):
+#     serializer_class = EventModelSerializer
+#     queryset = Event.objects.all()
+#
+#     def list(self, request, pk=None):
+#         queryset = Event.objects.filter(agent__id=pk)
+#         serializer = EventModelSerializer(queryset, many=True)
+#         return Response(serializer.data)
+#
+#     def retrieve(self, request, pk=None, event_pk=None):
+#         queryset = Event.objects.filter(agent__id=pk, id=event_pk)
+#         maildrop = get_object_or_404(queryset, pk=pk)
+#         serializer = EventModelSerializer(maildrop)
+#         return Response(serializer.data)
+

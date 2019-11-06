@@ -8,9 +8,12 @@ from account.forms import SignUpForm
 
 # Create your views here.
 def signup(request):
-    form = SignUpForm(request.POST)
     if request.method == 'POST':
         form = SignUpForm(request.POST)
+
+        #TODO
+        #não tem jeito do form ficar valido... 
+        #em todos os casos recebo o mesmo erro: The two password fields didn't match.
         if form.is_valid():
             user = form.save()
             user.refresh_from_db()  # load the profile instance created by the signal
@@ -18,6 +21,14 @@ def signup(request):
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=user.username, password=raw_password)
             login(request, user)
-            return redirect('/events')
+            # TODO 
+            # esse redirect tá com erro.. algum problema no fluxo
+            # return redirect('/events')
+        else:
+            context = {
+                'form': form,
+                'error': form.error_messages,
+            }
+            return render(request, 'registration/signup.html', context=context)
     else:
         return render(request, 'registration/signup.html', {'form': form})

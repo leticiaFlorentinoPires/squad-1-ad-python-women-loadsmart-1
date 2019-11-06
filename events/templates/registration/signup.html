@@ -4,67 +4,62 @@
 <div class="d-flex justify-content-center ">
     <div class="card-signup">
         <div class="card-header">
-            <h3>Sign up</h3>
+            <h3>Registre-se aqui</h3>
         </div>
-        <div class=" card-body-signup" >
+        <div class="card-body-signup" >
             <form method="post" >
                 {% csrf_token %}
                 <div class="form-group">
-                    <label for="id_username" class="control-label">Username: </label>
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-user"></i></span>
                         </div>
-                        <input type="text" class="form-control" placeholder="Username" id="id_username" name="username">
+                        <input type="text" class="form-control" placeholder="Nome de usuário" id="id_username" name="username">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="id_first_name" class="control-label">Nome: </label>
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-user"></i></span>
                         </div>
-                        <input type="text" class="form-control" placeholder="Primeiro Nome" id="id_first_name" name="first_name">
+                        <input type="text" class="form-control" placeholder="Primeiro nome" id="id_first_name" name="first_name">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="id_last_name" class="control-label">Último nome: </label>
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-user"></i></span>
                         </div>
-                        <input type="text" class="form-control" placeholder="Último Nome" id="id_last_name" name="last_name">
+                        <input type="text" class="form-control" placeholder="Último nome" id="id_last_name" name="last_name">
                     </div>
                 </div>
+                <hr/>
                 <div class="form-group">
-                    <label for="id_email" class="control-label">E-mail: </label>
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-envelope"></i></span>
                         </div>
-                        <input type="text" class="form-control" placeholder="Email" id="id_email" name="email">
+                        <input type="text" class="form-control" placeholder="E-mail" id="id_email" name="email">
                     </div>
                 </div>
                 <div class=" form-group">
-                    <label for="id_password1" class="control-label">Senha: </label>
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-key"></i></span>
                         </div>
-                        <input id="id_password1" name="password1" type="password" class="form-control" placeholder="Senha">
+                        <input id="id_password1" name="password1" type="password" class="form-control" placeholder="Informe uma senha">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="id_password1" class="control-label">Confirme a senha: </label>
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-key"></i></span>
                         </div>
-                        <input id="id_password2" name="password2" type="password" class="form-control" placeholder="Confirme sua senha">
+                        <input id="id_password2" name="password2" type="password" class="form-control" placeholder="Confirmar senha">
                     </div>
                 </div>
                 <div class="form-group">
-                    <input type="submit" value="Sign Up" class="btn float-right login_btn">
+                    <input type="submit" value="Feito!" class="btn float-right login_btn">
                 </div>
             </form>
         </div>

@@ -112,11 +112,12 @@ input:focus{
     text-transform: uppercase;
     letter-spacing: 4px;
 }
+
 .card-signup{
-    margin-top: auto;
+    margin-top: 10%;
     margin-bottom: auto;
-    padding: 35px;
-    max-width: 550px;
+    padding: 24px;
+    width: 80%;
     background-color: rgba(0,0,0,0.5) !important;
 }
 

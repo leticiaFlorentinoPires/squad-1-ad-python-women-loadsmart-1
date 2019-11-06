@@ -1,5 +1,5 @@
 from django.db.models import QuerySet, Count
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic.list import ListView, MultipleObjectMixin
 from django.views.generic.detail import DetailView
 from django.http import HttpResponseNotFound, HttpResponseBadRequest, HttpResponse
@@ -87,10 +87,32 @@ class EventFilter(ListView):
 
         return super(EventFilter, self).get(request, *args, **kwargs)
 
+class ShelveEvent(DetailView):
+
+    def get(self, request, pk):
+        event = Event.objects.get(pk=pk)
+        event.archived = True
+        event.save()
+        return redirect('events:events-list')
+
+class UnshelveEvent(DetailView):
+
+    def get(self, request, pk):
+        event = Event.objects.get(pk=pk)
+        event.archived = False
+        event.save()
+        return redirect('events:events-list')
+
+class DeleteEvent(DetailView):
+
+    def get(self, request, pk):
+        event = Event.objects.get(pk=pk)
+        event.delete()
+        return redirect('events:events-list')
+
 class EventDetail(DetailView):
 
     def get(self, request, event_id):
-
         event = Event.objects.get(pk=event_id)
         context = {
             'event': event,

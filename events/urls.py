@@ -3,7 +3,14 @@ from rest_framework import routers
 from rest_framework.routers import DefaultRouter
 from rest_framework_extensions.routers import NestedRouterMixin
 from events import views
-from events.views import EventsListView, EventFilter, EventDetail
+from events.views import (
+    EventsListView,
+    EventFilter,
+    EventDetail,
+    ShelveEvent,
+    UnshelveEvent,
+    DeleteEvent
+    )
 
 router = routers.DefaultRouter()
 router.register(r'events', views.EventAPIViewSet)
@@ -27,5 +34,8 @@ urlpatterns = [
     path('', EventFilter.as_view(), name='events-list'),
     # re_path(r'agents/(?P<id_agent>\d+)/events/(?P<id_event>\d+)', agent_id_event_id , name='events_by_agents'),
     # path('<str:envName>', EventFilter.as_view(), name='filter_events'),
-    path('<int:event_id>', EventDetail.as_view(), name='detail')
+    path('<int:event_id>', EventDetail.as_view(), name='detail'),
+    re_path(r'(?P<pk>\d+)?/shelved', ShelveEvent.as_view(), name = 'shelved'),
+    re_path(r'(?P<pk>\d+)?/unshelved', UnshelveEvent.as_view(), name = 'unshelved'),
+    re_path(r'(?P<pk>\d+)?/delete', DeleteEvent.as_view(), name = 'delete')
 ]

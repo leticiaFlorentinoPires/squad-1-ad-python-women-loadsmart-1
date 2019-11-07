@@ -50,31 +50,56 @@
         <tbody>
             {% for event in object_list %}
                 <tr>
-                    <td>{{ event.archived }}</td>
-                    <td>
-                        <p class="text-lowercase">{{ event.get_level_display }}</p>
-                    </td>
-                    <td>
-                            <p class="text-center font-weight-bold"> Título: {{ event.title }}</p>
-                            <p class="text-center">Descrição: {{ event.data }}</p>
-                        <p class="text-center"> Endereço de origem: {{ event.agent.address }}</p>
-                    </td>
-                    <td> {{ event.frequencia }} </td>
-                    <td>
-                        <div class="btn-group" role="group" aria-label="Basic example">
-                            <a href="{% url 'events:detail' event.pk %}" class="btn btn-primary">
-                                <i class="fas fa-eye"></i>
-                            </a>
-                        </div>
-
-                    </td>
+                    <th>Arquivado</th>
+                    <th>Level</th>
+                    <th>Log</th>
+                    <th>Eventos</th>
+                    <th>Visualize</th>
+                    <th>Shelve/Unshelve</th>
+                    <th>Delete</th>
                 </tr>
-            {% empty %}
-                <tr>
-                    <td colspan=5 class="text-center">
-                        Não há eventos para serem listados
-                    </td>
-                </tr>
-            {% endfor %}
-    </table>
+            </thead>
+            <tbody>
+                {% for event in object_list %}
+                    <tr>
+                        <td>{{ event.archived }}</td>
+                        <td>
+                            <p class="text-lowercase">{{ event.get_level_display }}</p>
+                        </td>
+                        <td>
+                             <p class="text-center font-weight-bold"> Título: {{ event.title }}</p>
+                             <p class="text-center">Descrição: {{ event.data }}</p>
+                            <p class="text-center"> Endereço de origem: {{ event.agent.address }}</p>
+                        </td>
+                        <td> {{ event.frequencia }} </td>
+                        <td>
+                            <div class="btn-group" role="group" aria-label="Basic example">
+                                <a href="{% url 'events:detail' event.pk %}" class="btn btn-primary">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="btn-group" role="group" aria-label="Basic example">
+                                <a href="{% url 'events:shelved' event.pk %}" class="btn btn-success"><i class="fas fa-edit"></i></a>
+                                <a href="{% url 'events:unshelved' event.pk %}" class="btn btn-warning"><i class="fas fa-eraser"></i></a>
+                                </a>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="btn-group" role="group" aria-label="Basic example">
+                                <a href="{% url 'events:delete' event.pk %}" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan=5 class="text-center">
+                            Não Há eventos para serem listados
+                        </td>
+                    </tr>
+                {% endfor %}
+        </table>
+    </div>
 {% endblock %}

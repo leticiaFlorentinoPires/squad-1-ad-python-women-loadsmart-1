@@ -3,6 +3,17 @@
     padding-bottom: 10px;
 }
 
+.navbar {
+    background-color: #60696f !important;
+}
+
+.navbar-light .navbar-brand{
+    color: white !important;
+}
+.nav-link{
+    color: white !important;
+    margin-right: 10px;
+}
 .login-style{
     right: 0;
     position: absolute;

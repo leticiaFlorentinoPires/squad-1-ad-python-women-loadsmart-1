@@ -72,18 +72,11 @@ class EventFilter(ListView):
         return self.retorno_query
 
     def get(self, request, *args, **kwargs):
-        print("estou no get")
         if request.method == "GET":
-            print("estou no get")
             self.env = request.GET.get('envName')
             self.orderBy = request.GET.get('orderBy')
             self.search_for = request.GET.get('buscarPor')
             self.pesquisa_text = request.GET.get('pesquisaText')
-            print("todos os parametros sao")
-            print(self.env)
-            print(self.orderBy)
-            print(self.search_for)
-            print(self.pesquisa_text)
 
         return super(EventFilter, self).get(request, *args, **kwargs)
 

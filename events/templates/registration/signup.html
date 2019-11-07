@@ -62,6 +62,16 @@
                 <div class="form-group">
                     <input type="submit" value="Feito!" class="btn float-right login_btn">
                 </div>
+
+                <div style="color: red;">
+                    {% if form %}
+                        {% for field in form %}
+                            {% for error in field.errors %}
+                                {{field.label}}: {{ error|escape }}
+                            {% endfor %}
+                        {% endfor %}
+                    {% endif %}
+                </div>
             </form>
         </div>
     </div>

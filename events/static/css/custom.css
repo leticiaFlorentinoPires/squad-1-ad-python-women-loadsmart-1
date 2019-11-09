@@ -140,3 +140,9 @@ input:focus{
 .control-label {
     margin: 2%;
 }
+/*Details*/
+
+.section-title{
+    margin-top: 3%;
+    margin-bottom: 3%;
+}

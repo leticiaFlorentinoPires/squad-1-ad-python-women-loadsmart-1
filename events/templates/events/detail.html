@@ -2,30 +2,37 @@
 
 {% block content %}
 
-    <a href="{% url 'events:events-list' %}" class="btn btn-outline-primary">
-        <i class="fas fa-arrow-left"></i>
-    </a>
-
-    <h2> Evento: {{ event.get_level_display |capfirst }}, no endereço {{ event.agent.address }}, em {{ event.date }}</h2>
-
+    
     <div class="container">
+        <a href="{% url 'events:events-list' %}" class="btn btn-outline-primary">
+            <i class="fas fa-arrow-left"></i> Voltar
+        </a>
+
         <div class="row">
-            <div class="col-sm">
-                <h2>Título</h2>
+                <!-- Section Titile -->
+                <div class="col-md-12 section-title">
+                    <h2>
+                        {{ event.get_level_display |capfirst }}, no endereço {{ event.agent.address }}, em {{ event.date }}
+                    </h2>
+                </div>
+        </div>  
+        <div class="row">
+            <div class="col-md-8 col-sm">
+                <h4>Título</h4>
                 <p>{{ event.title }}</p>
-                <h2>Descrição</h2>
+                <h4>Descrição</h4>
                 <p>{{ event.data }}</p>
             </div>
             </br>
-            <div class="col-sm">
-                <h3>Nível</h3>
+            <div class="col-md-4 col-sm">
+                <h5>Nível</h5>
                 {{ event.get_level_display }}
                 </br>
                 </br>
-                <h3>Eventos</h3>
+                <h5>Eventos</h5>
                 <p>{{event.frequencia}}</p>
                 </br>
-                <h3>Coletado por</h3>
+                <h5>Coletado por</h5>
                 {{ event.agent.user }} 
             </div>
         </div>

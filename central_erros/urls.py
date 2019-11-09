@@ -15,8 +15,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.views.generic import TemplateView, RedirectView
+
+from rest_framework.authtoken.views import obtain_auth_token
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('events/', include(('events.urls', 'events'), namespace='events')),
+    path('get_token', obtain_auth_token),
+    path('account/', include('django.contrib.auth.urls')),
+    path('account/', include('account.urls')), 
+    
 ]

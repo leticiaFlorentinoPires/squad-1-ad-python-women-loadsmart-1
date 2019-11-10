@@ -40,29 +40,6 @@ class EventFilter(ListView):
     retorno_query = None
     ordering = ["level"]
 
-    def calcula_frequencia(self):
-        """
-        Search events based on frequency, 
-            related to :model:`events.Event`
-        
-        **Context**
-        
-        ``mymodel``
-            An instance of :model:`events.Event`
-            
-        **Template:**
-            :template:`events/events_list.html`
-        
-        """
-        
-        event_group_by = self.retorno_query.values('agent__id', 'level').annotate(freq=Count('agent_id'))
-        dict_frequencia = dict()
-        for grupo in event_group_by:
-            for event in Event.objects.all():
-                if grupo['agent__id'] == event.agent_id and grupo['level'] == event.level:
-                      dict_frequencia[event.id] = (event,grupo['freq'],grupo['level'])
-        return dict_frequencia
-
     def get_context_data(self, *, object_list=None, **kwargs):
         """
         Search events from particular environment, 

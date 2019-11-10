@@ -39,7 +39,7 @@ class Agent(models.Model):
     )
 
     def __str__(self):
-         """string representation of an agent object """
+        """string representation of an agent object """
         return f'{self.name}, {self.status}, {self.env},{self.version}, {self.address}'
 
 

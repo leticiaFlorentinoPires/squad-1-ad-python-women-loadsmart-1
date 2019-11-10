@@ -120,3 +120,29 @@ class TestViews(TestCase):
         response = self.client.get('/events/?envName=env&orderBy=ordenacao&buscarPor=descricao&pesquisaText=data1&submit=search')
         self.assertEqual(response.context['query_set_result'][0].data, event.data)
 
+    def test_context_of_view_enviroment(self):
+        '''testing events filter enviroment'''
+        event = Event.objects.get(id=1)
+        response = self.client.get('/events/?envName=production&orderBy=ordenacao&buscarPor=buscaCampo&pesquisaText=&submit=search')
+        self.assertEqual(response.context['query_set_result'][0].title, event.title)
+
+    def test_context_of_view_busca_por_level(self):
+        '''testing events search for level'''
+        event = Event.objects.get(id=1)
+        response = self.client.get('/events/?envName=env&orderBy=ordenacao&buscarPor=level&pesquisaText=5&submit=search')
+        self.assertEqual(response.context['query_set_result'][0].title, event.title)
+
+    def test_context_of_view_busca_por_origem(self):
+        '''testing events search for source IP'''
+        event = Event.objects.get(id=1)
+        response = self.client.get('/events/?envName=env&orderBy=ordenacao&buscarPor=origem&pesquisaText=10.0.34.15&submit=search')
+        self.assertEqual(response.context['query_set_result'][0].title, event.title)
+
+    def test_context_of_view_order_by_frequencia(self):
+        '''testing events search for frequency'''
+        event = Event.objects.get(id=1)
+        response = self.client.get('http://127.0.0.1:8000/events/?envName=env&orderBy=frequencia&buscarPor=buscaCampo&pesquisaText=&submit=search')
+        self.assertEqual(response.context['query_set_result'][0].title, event.title)
+
+
+

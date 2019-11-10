@@ -5,10 +5,12 @@ import django
 import pytest
 from django.contrib.auth.models import User, Group
 from django.db.models import QuerySet
+from django.http import HttpRequest
 from django.test import TestCase
+from django.urls import reverse
 
 from events.models import Event, Agent, AgentManager
-from events.views import list_events, get_event
+from events.views import EventFilter
 
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "central_erros.settings")
@@ -57,45 +59,64 @@ class TestViews(TestCase):
         )
 
         Event.objects.create(
-            title="__TITLE__",
-            level="critical",
-            data="__DATA__",
+            title="title1",
+            level=5,
+            data="data1",
             archived=False,
             date=datetime.date.today(),
             agent=agent_linux,
         )
         Event.objects.create(
-            title="__TITLE__",
-            level="information",
-            data="__DATA__",
+            title="title2",
+            level=1,
+            data="data2",
             archived=False,
             date=datetime.date.today(),
             agent=agent_mac,
         )
 
-    def test_view_list_events(self):
-        response = list_events(None)
-        assert response.status_code == 200
+    def test_api_events(self):
+        '''testing endpoint of events'''
+        response = self.client.get('/events/api/events/')
+        self.assertEqual(response.status_code, 200)
 
-    def test_event_detail(self):
-        fake_get = FakeGetRequest()
-        event = Event.objects.first()
+    def test_api_agents(self):
+        '''testing endpoint of agents'''
+        response = self.client.get('/events/api/agent/')
+        self.assertEqual(response.status_code, 200)
 
-        response = get_event(fake_get, event.pk)
-        assert response.status_code == 200
+    def test_api_users(self):
+        '''testing endpoint of users'''
+        response = self.client.get('/events/api/users/')
+        self.assertEqual(response.status_code, 200)
 
-    def test_event_detail_not_found(self):
-        fake_get = FakeGetRequest()
-        response = get_event(fake_get, 9999)
-        assert response.status_code == 404
+    def test_api_groups(self):
+        '''testing endpoint of groups'''
+        response = self.client.get('/events/api/groups/')
+        self.assertEqual(response.status_code, 200)
 
-    def test_event_detail_not_found_invalid_method(self):
-        fake_post = FakePostRequest()
-        response = get_event(fake_post, 1)
-        assert response.status_code == 400
+    def test_context_of_view_event_list(self):
+        '''testing context of event_list'''
+        response = self.client.get(reverse('events:events-list'))
+        self.assertEqual(response.status_code, 200)
+        self.assertQuerysetEqual(response.context['dropdown_list'], ["'dev'", "'producao'", "'homologacao'"])
 
-    def test_get_agent_level(self):
-        #TODO: add test that is return Agent type, in real BD it is working
-        #but here no...it's return empty list
-        agent = Agent.objects.get_agent_level(envname="production")
-        assert isinstance(agent, QuerySet)
+
+    def test_context_of_view_detail(self):
+        '''testing events detail view's context'''
+        event = Event.objects.get(id=1)
+        response = self.client.get(reverse('events:detail', kwargs={'event_id': 1}))
+        self.assertEqual(response.context['event'].title, event.title)
+
+    def test_context_of_view_order(self):
+        '''testing events ordering'''
+        event = Event.objects.get(id=2)
+        response = self.client.get('/events/?envName=env&orderBy=level&buscarPor=buscaCampo&pesquisaText=&submit=search')
+        self.assertEqual(response.context['query_set_result'][0].title, event.title)
+
+    def test_context_of_view_busca_por(self):
+        '''testing events search for'''
+        event = Event.objects.get(id=1)
+        response = self.client.get('/events/?envName=env&orderBy=ordenacao&buscarPor=descricao&pesquisaText=data1&submit=search')
+        self.assertEqual(response.context['query_set_result'][0].data, event.data)
+

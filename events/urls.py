@@ -18,8 +18,9 @@ router.register(r'agents', views.AgentAPIViewSet)
 router.register(r'users', views.UserAPIViewSet)
 router.register(r'groups', views.GroupAPIViewSet)
 
-#resource to get acess to get, post ,put , delete of /agent/id/event
+
 class NestedDefaultRouter(NestedRouterMixin, DefaultRouter):
+    '''#resource to get acess to get, post ,put , delete of /agent/id/event'''
     pass
 
 #router for get acess to "get", "post", "put", "delete" of endpoint /agent/id/event

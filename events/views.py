@@ -18,12 +18,19 @@ from .serializers import (
 
 
 class EventsListView(ListView):
-    
+    """
+    List all events, related to :model: `events.Event`
+    """
     paginate_by = 10
     model = Event
 
 
 class EventFilter(ListView):
+    """
+    Apply filters to select particular event, 
+    related to :model:`events.Event`
+    """
+    
     model = Event
     template_name = '../templates/events/event_list.html'
     env = None
@@ -34,6 +41,20 @@ class EventFilter(ListView):
     ordering = ["level"]
 
     def calcula_frequencia(self):
+        """
+        Search events based on frequency, 
+            related to :model:`events.Event`
+        
+        **Context**
+        
+        ``mymodel``
+            An instance of :model:`events.Event`
+            
+        **Template:**
+            :template:`events/events_list.html`
+        
+        """
+        
         event_group_by = self.retorno_query.values('agent__id', 'level').annotate(freq=Count('agent_id'))
         dict_frequencia = dict()
         for grupo in event_group_by:
@@ -43,12 +64,36 @@ class EventFilter(ListView):
         return dict_frequencia
 
     def get_context_data(self, *, object_list=None, **kwargs):
+        """
+        Search events from particular environment, 
+            related to :model:`events.Event`
+            
+        **Context**
+        
+        ``mymodel``
+            An instance of :model:`events.Event`
+            
+        **Template:**
+            :template:`events/events_list.html`
+        """
+        
         context = super(EventFilter, self).get_context_data(**kwargs)
         context['dropdown_list'] = ["dev","producao","homologacao"]
         context['query_set_result'] = self.get_queryset()
         return context
 
     def get_queryset(self):
+        """
+        Search a particular event :model:`events.Event`
+        
+        **Context**
+        
+        ``mymodel``
+            An instance of :model:`events.Event`
+            
+        **Template:**
+            :template:`events/events_list.html`
+        """
         self.retorno_query = Event.objects.all()
         if self.env is not None and self.env!="env":
            self.retorno_query= self.retorno_query.filter(agent__env=self.env)
@@ -71,6 +116,18 @@ class EventFilter(ListView):
         return self.retorno_query
 
     def get(self, request, *args, **kwargs):
+        """
+        Display events based on filters :model:`events.Event`.
+        
+        **Context**
+        
+        ``mymodel``
+            An instance of :model:`events.Event`
+            
+        **Template:**
+            :template:`events/events_list.html`
+        """  
+        
         if request.method == "GET":
             self.env = request.GET.get('envName')
             self.orderBy = request.GET.get('orderBy')
@@ -80,31 +137,88 @@ class EventFilter(ListView):
         return super(EventFilter, self).get(request, *args, **kwargs)
 
 class ShelveEvent(DetailView):
+    """
+    Change event from shelver = False to shelved = True,
+        related to :model:`events.Event`
+    """
 
     def get(self, request, pk):
+        """
+        Display updated events, related to :model:`events.Event`
+        
+        **Context**
+        ``mymodel``
+            An instance of :model:`events.Event`
+        
+        **Template:**
+            :template:`events/events_list.html`
+        """
+        
         event = Event.objects.get(pk=pk)
         event.archived = True
         event.save()
         return redirect('events:events-list')
 
 class UnshelveEvent(DetailView):
+    """
+    Change event from shelver = True to shelved = False,
+        related to :model:`events.Event`
+    """
 
     def get(self, request, pk):
+        """
+        Display updated events, related to :model:`events.Event`
+        
+        **Context**
+        ``mymodel``
+            An instance of :model:`events.Event`
+        
+        **Template:**
+            :template:`events/events_list.html`
+        """
+        
         event = Event.objects.get(pk=pk)
         event.archived = False
         event.save()
         return redirect('events:events-list')
 
 class DeleteEvent(DetailView):
+    """
+    Delete a particular event, related to :model:`events.Event`
+    """
 
     def get(self, request, pk):
+        """
+        Display updated events, related to :model:`events.Event`
+        
+        **Context**
+        ``mymodel``
+            An instance of :model:`events.Event`
+        
+        **Template:**
+            :template:`events/events_list.html`
+        """
         event = Event.objects.get(pk=pk)
         event.delete()
         return redirect('events:events-list')
 
 class EventDetail(DetailView):
+    """
+    Display a particual Event entry, related to :model:`events.Event`
+    """
 
     def get(self, request, event_id):
+        """
+        Display an individual event :model:`events.Event`
+        
+        **Context**
+        ``mymodel``
+            An instance of :model:`events.Event`
+            
+        **Template:**
+            :template:`events/detail.html`
+        """
+        
         event = Event.objects.get(pk=event_id)
         context = {
             'event': event,
@@ -113,39 +227,39 @@ class EventDetail(DetailView):
 
 
 class AgentAPIViewSet(NestedViewSetMixin, viewsets.ModelViewSet):
+    """
+    A viewset for viewing and editing Agents.
+    """
+    
     queryset = Agent.objects.all()
     serializer_class = AgentModelSerializer
 
 
 class UserAPIViewSet(viewsets.ModelViewSet):
+    """
+    A viewset for viewing and editing Users.
+    """
+    
     queryset = User.objects.all()
     serializer_class = UserModelSerializer
 
 
 class GroupAPIViewSet(viewsets.ModelViewSet):
+    """
+    A viewset for viewing and editing Groups.
+    """
+    
     queryset = Group.objects.all()
     serializer_class = GroupModelSerializer
 
 
 class EventAPIViewSet(NestedViewSetMixin, viewsets.ModelViewSet):
+    """
+    A viewset for viewing and editing Events.
+    """
+    
     queryset = Event.objects.all()
     serializer_class = EventModelSerializer
 
 
-
-#in case of future consultances
-# class EventsAgentViewSet(NestedViewSetMixin, viewsets.ViewSet):
-#     serializer_class = EventModelSerializer
-#     queryset = Event.objects.all()
-#
-#     def list(self, request, pk=None):
-#         queryset = Event.objects.filter(agent__id=pk)
-#         serializer = EventModelSerializer(queryset, many=True)
-#         return Response(serializer.data)
-#
-#     def retrieve(self, request, pk=None, event_pk=None):
-#         queryset = Event.objects.filter(agent__id=pk, id=event_pk)
-#         maildrop = get_object_or_404(queryset, pk=pk)
-#         serializer = EventModelSerializer(maildrop)
-#         return Response(serializer.data)
 

@@ -45,11 +45,10 @@ class EventFilter(ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(EventFilter, self).get_context_data(**kwargs)
         context['dropdown_list'] = ["dev","producao","homologacao"]
-        print(Event.objects.values('agent__env').distinct())
+        context['query_set_result'] = self.get_queryset()
         return context
 
     def get_queryset(self):
-        print("resultado do get_queryset")
         self.retorno_query = Event.objects.all()
         if self.env is not None and self.env!="env":
            self.retorno_query= self.retorno_query.filter(agent__env=self.env)

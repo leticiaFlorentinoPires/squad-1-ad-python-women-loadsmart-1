@@ -4,7 +4,7 @@
     <div class="row filtro">
         <form  class="col-sm-12" method="get" action="{% url 'events:events-list' %}">
             <div class="form-row">
-                <div class="col-sm-3">
+                <div class="col-sm-12">
                     <select class="form-control" name="envName">
                         <option value="env">Ambiente</option>
                             {% for e in dropdown_list %}
@@ -12,34 +12,36 @@
                             {% endfor %}
                     </select>
                 </div>
-                <div class="col-sm-3">
+            </div>
+            <div class="form-row" style="margin-top:10px">
+                <div class="col-sm-12">
                     <select class="form-control" name="orderBy">
                         <option   value="ordenacao">Ordenar Por</option>
-                        <option   value=frequencia>frequencia</option>
-                        <option   value=level>level</option>
+                        <option   value=frequencia>Frequência</option>
+                        <option   value=level>Level</option>
                     </select>
-                </div>
-                <div class="col-sm-3">
-                    <select class="form-control" name="buscarPor">
-                        <option   value="buscaCampo">Buscar Por</option>
-                        <option   value=level>level</option>
-                        <option   value=descricao>descricao</option>
-                        <option   value=origem>origem</option>
-                    </select>
-                </div>
-                <div class="col-sm-2">
-                    <input class="form-control" type="text" name="pesquisaText" onfocus=this.value='' placeholder="Type here"/>
-                </div>
-                <div class="col-sm-1">
-                    <button class="btn btn-primary" type="submit" name="submit" value="search" >Procurar</button>
                 </div>
             </div>
+            <div class="form-row" style="margin-top:10px">
+                <div class="col-sm-6">
+                    <select class="form-control" name="buscarPor">
+                        <option   value="buscaCampo">Filtrar por</option>
+                        <option   value=level>Level</option>
+                        <option   value=descricao>Descrição</option>
+                        <option   value=origem>Origem</option>
+                    </select>
+                </div>
+                <div class="col-sm-6">
+                    <input class="form-control" type="text" name="pesquisaText" onfocus=this.value='' placeholder="Digite aqui"/>
+                </div>
+            </div>
+            <button class="btn login_btn" style="margin-top:10px" type="submit" name="submit" value="search"> Procurar</button>
         </form>
     </div>
 
     <table class="table table-striped table-bordered" style="margin-top: 1%;">
         <thead>
-            <tr>
+            <tr style="color: #bfbcbb">
                 <th>Arquivado</th>
                 <th>Level</th>
                 <th>Log</th>
@@ -49,14 +51,24 @@
         </thead>
         <tbody>
             {% for event in object_list %}
-                <tr>
-                    <td>{{ event.archived }}</td>
+                <tr style="color: #e8e4e3">
+                    <td>
+                        {% if event.archived %}
+                            <a style="margin: 2px;" href="{% url 'events:unshelved' event.pk %}" class="btn btn-secondary">
+                                <i class="fas fa-archive"></i> Arquivado
+                            </a>
+                        {% else %} 
+                            <a style="margin: 2px;" href="{% url 'events:shelved' event.pk %}" class="btn btn-warning">
+                                <i class="fas fa-archive"></i> Arquivar
+                            </a>
+                        {% endif %}
+                    </td>
                     <td>
                         <p class="text-lowercase">{{ event.get_level_display }}</p>
                     </td>
                     <td>
-                            <p class="text-center font-weight-bold"> Título: {{ event.title }}</p>
-                            <p class="text-center">Descrição: {{ event.data }}</p>
+                        <p class="text-center font-weight-bold"> Título: {{ event.title }}</p>
+                        <p class="text-center">Descrição: {{ event.data }}</p>
                         <p class="text-center"> Endereço de origem: {{ event.agent.address }}</p>
                     </td>
                     <td> {{ event.frequencia }} </td>
@@ -64,15 +76,11 @@
                     <td>
                         <div class="btn-group" role="group" aria-label="Basic example">
                             <a style="margin: 2px;" href="{% url 'events:detail' event.pk %}" class="btn btn-primary">
-                                    <i class="fas fa-eye"></i>
-                                </a>
-                            {% if event.archived == False  %}
-                                <a style="margin: 2px;" href="{% url 'events:shelved' event.pk %}" class="btn btn-success"><i class="fas fa-edit"></i></a>
-                            {% else %}
-                                <a style="margin: 2px;" href="{% url 'events:unshelved' event.pk %}" class="btn btn-warning"><i class="fas fa-eraser"></i></a>
-                            {% endif %}
+                                <i class="fas fa-info-circle"></i>
+                            </a>
 
-                            <a style="margin: 2px;" href="{% url 'events:delete' event.pk %}" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>
+                            <a style="margin: 2px;" href="{% url 'events:delete' event.pk %}" class="btn btn-danger">
+                                <i class="fas fa-trash-alt"></i>
                             </a>
                         </div>
                     </td>

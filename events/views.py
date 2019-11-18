@@ -1,15 +1,15 @@
-from django.db.models import QuerySet, Count
 from django.shortcuts import render, redirect
 from django.views.generic.list import ListView, MultipleObjectMixin
 from django.views.generic.detail import DetailView
-from django.http import HttpResponseNotFound, HttpResponseBadRequest, HttpResponse
-from requests import Response
 from rest_framework import viewsets
-from rest_framework.generics import get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth.models import Group
 from events.models import Event, Agent
 from rest_framework_extensions.mixins import NestedViewSetMixin
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
+from events.api_permissions import OnlySuperCanCreate, OnlyStaffCanCreate
+
 
 from .serializers import (
     EventModelSerializer,
@@ -207,10 +207,10 @@ class AgentAPIViewSet(NestedViewSetMixin, viewsets.ModelViewSet):
     """
     A viewset for viewing and editing Agents.
     """
-    
     queryset = Agent.objects.all()
     serializer_class = AgentModelSerializer
-
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [OnlySuperCanCreate]
 
 class UserAPIViewSet(viewsets.ModelViewSet):
     """
@@ -219,7 +219,8 @@ class UserAPIViewSet(viewsets.ModelViewSet):
     
     queryset = User.objects.all()
     serializer_class = UserModelSerializer
-
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
 class GroupAPIViewSet(viewsets.ModelViewSet):
     """
@@ -228,6 +229,8 @@ class GroupAPIViewSet(viewsets.ModelViewSet):
     
     queryset = Group.objects.all()
     serializer_class = GroupModelSerializer
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [OnlyStaffCanCreate]
 
 
 class EventAPIViewSet(NestedViewSetMixin, viewsets.ModelViewSet):

@@ -3,6 +3,7 @@ from events.models import Event, Agent
 from django.contrib.auth.models import User
 from django.contrib.auth.models import Group
 
+
 class AgentModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Agent
